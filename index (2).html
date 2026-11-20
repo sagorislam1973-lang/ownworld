@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>সাগর ও সীমা</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&family=Tiro+Bangla&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFE6EF;--bg2:#FFC9DC;--glass:rgba(255,255,255,.62);--ink:#4A1530;--soft:#8A4B66;--rose:#E0356B;--rose2:#FF7BA6;--line:rgba(224,53,107,.22);--gold:#C98A2B;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#26091A;--bg2:#431330;--glass:rgba(80,28,56,.6);--ink:#FFE3EE;--soft:#E8A9C2;--rose:#FF6F9F;--rose2:#FF8FB1;--line:rgba(255,143,177,.25);--gold:#F0C070}}
+:root[data-theme="dark"]{--bg:#26091A;--bg2:#431330;--glass:rgba(80,28,56,.6);--ink:#FFE3EE;--soft:#E8A9C2;--rose:#FF6F9F;--rose2:#FF8FB1;--line:rgba(255,143,177,.25);--gold:#F0C070}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:"Hind Siliguri",system-ui,sans-serif;font-size:17px;line-height:1.65;background:radial-gradient(circle at 15% 8%,var(--bg2),transparent 45%),radial-gradient(circle at 90% 40%,var(--bg2),transparent 40%),var(--bg);background-attachment:fixed}
+main{max-width:480px;margin:0 auto;padding:22px 16px 120px}
+.tab{display:none}.tab.on{display:block}
+h1,h2,.serif{font-family:"Tiro Bangla",Georgia,serif;font-weight:400}
+h2{font-size:1.7rem;margin:6px 0 4px;text-align:center}
+.sub{text-align:center;color:var(--soft);margin:0 0 18px}
+.card{background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:16px;box-shadow:0 12px 32px rgba(224,53,107,.14)}
+.hero{text-align:center;padding:8px 0 18px}
+.hero svg{width:112px;height:100px;filter:drop-shadow(0 10px 18px rgba(224,53,107,.4));animation:beat 2.6s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.08)}24%{transform:scale(1)}}
+.hero h1{font-size:2.5rem;margin:6px 0 0;line-height:1.25}
+.hero p{margin:2px 0 0;color:var(--soft)}
+.letter{border-radius:28px 28px 28px 6px;position:relative}
+.letter .serif{font-size:1.28rem;line-height:1.85;margin:0}
+.letter small,.hint{color:var(--soft);font-size:.92rem}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.count{text-align:center;padding:16px 10px;margin:0}
+.count b{display:block;font-family:"Tiro Bangla",serif;font-weight:400;font-size:2.3rem;color:var(--rose);line-height:1.2}
+.count span{color:var(--soft);font-size:.92rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
+.chip{border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:7px 14px;width:auto;font-weight:400}
+.chip.on{background:var(--rose);border-color:var(--rose);color:#fff}
+button{font:inherit;cursor:pointer;border:0;border-radius:999px;padding:13px 22px;background:linear-gradient(135deg,var(--rose2),var(--rose));color:#fff;font-weight:600;width:100%;box-shadow:0 8px 20px rgba(224,53,107,.3)}
+button.ghost{background:transparent;color:var(--rose);border:1.5px solid var(--rose);box-shadow:none}
+button:disabled{opacity:.7;cursor:default}
+button:focus-visible,input:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.play{min-height:150px;display:flex;flex-direction:column;justify-content:center;text-align:center;border:1.5px dashed var(--rose2)}
+.play .serif{font-size:1.35rem;line-height:1.7;margin:4px 0}
+.badge{display:inline-block;align-self:center;background:var(--rose);color:#fff;border-radius:999px;padding:2px 14px;font-size:.92rem}
+.frame{position:relative;border-radius:22px;overflow:hidden;background:var(--bg2);aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;color:var(--soft);text-align:center;padding:16px}
+.frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cap{position:absolute;left:0;right:0;bottom:18%;text-align:center;color:#fff;background:rgba(0,0,0,.38);padding:6px 10px;font-size:1.1rem;display:none}
+input[type=text]{width:100%;border:1.5px solid var(--line);background:var(--glass);color:var(--ink);border-radius:14px;padding:11px 14px;font:inherit;margin:10px 0}
+input[type=file]{display:none}
+label.btn{display:block;text-align:center;border-radius:999px;padding:13px;border:1.5px solid var(--rose);color:var(--rose);font-weight:600;cursor:pointer;margin-top:12px}
+.ticket{display:flex;align-items:center;gap:12px;border-left:5px solid var(--gold);padding:14px 16px}
+.ticket p{margin:0;flex:1}
+.ticket button{width:auto;padding:8px 16px;font-size:.95rem}
+.ticket.used{opacity:.5}
+.ticket.used p{text-decoration:line-through}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;gap:4px;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line);z-index:5}
+nav button{background:none;box-shadow:none;color:var(--soft);flex:1;max-width:110px;padding:6px 2px;border-radius:16px;font-size:.88rem;line-height:1.3;font-weight:400}
+nav button span{display:block;font-size:1.4rem}
+nav button.on{color:var(--rose);background:rgba(224,53,107,.12);font-weight:600}
+#view{position:fixed;inset:0;background:rgba(20,5,12,.9);z-index:20;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff;padding:20px}
+#view .frame{width:min(80vw,340px)}
+.streak,.note{text-align:center;color:var(--soft);min-height:1.65em;margin:8px 0 0}
+.heart{position:fixed;bottom:-30px;font-size:26px;pointer-events:none;animation:up 2.2s ease-out forwards;z-index:9}
+@keyframes up{to{transform:translateY(-105vh) rotate(25deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){.heart{display:none}.hero svg{animation:none}}
+.panel{display:none}.panel.on{display:block}
+.grid{display:grid;gap:8px}
+button.cell{aspect-ratio:1;border-radius:16px;background:var(--glass);border:1px solid var(--line);font-size:2rem;padding:0;color:var(--ink);box-shadow:none;width:auto}
+canvas{width:100%;aspect-ratio:1;background:#fff;border-radius:20px;border:1px solid var(--line);touch-action:none;display:block;margin-bottom:10px}
+input[type=date],textarea{width:100%;border:1.5px solid var(--line);background:var(--glass);color:var(--ink);border-radius:14px;padding:11px 14px;font:inherit;margin:8px 0}
+.item{flex-direction:column;align-items:flex-start;gap:2px;margin-bottom:10px}
+nav button{font-size:.8rem}
+nav button span{font-size:1.3rem}
+#lg{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at 20% 10%,var(--bg2),transparent 50%),var(--bg)}
+#lg .card{width:100%;max-width:380px;text-align:center}
+input[type=password]{width:100%;border:1.5px solid var(--line);background:var(--glass);color:var(--ink);border-radius:14px;padding:11px 14px;font:inherit;margin:8px 0}
+main{padding-top:30px}
+.card{border-radius:20px;border-color:rgba(224,53,107,.14);box-shadow:0 1px 2px rgba(74,21,48,.06),0 14px 30px -14px rgba(224,53,107,.28)}
+button{border-radius:14px;box-shadow:0 8px 16px -8px rgba(224,53,107,.6)}
+.chip{border-radius:12px;box-shadow:none}
+.hero h1{font-size:2.2rem;background:linear-gradient(120deg,var(--rose),#B5179E);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1 span{-webkit-text-fill-color:var(--rose)}
+nav{padding-top:6px}
+nav button{border-radius:0;box-shadow:none;padding:6px 2px;color:var(--soft)}
+nav button.on{background:none;color:var(--rose);box-shadow:inset 0 2px 0 var(--rose)}
+nav svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block;margin:0 auto 2px}
+#hp{width:150px;height:150px;border-radius:50%;margin:0 auto;border:2px solid var(--rose2);display:flex;align-items:center;justify-content:center;font-size:2.4rem;touch-action:none;user-select:none;-webkit-user-select:none;background:var(--glass);transition:all .25s}
+#hp.me{box-shadow:0 0 0 8px rgba(255,143,177,.35)}
+#hp.both{background:radial-gradient(circle,#FF8FB1,#E0356B);box-shadow:0 0 0 14px rgba(224,53,107,.3),0 0 60px rgba(224,53,107,.6)}
+</style>
+</head>
+<body>
+<main>
+
+<section class="tab on" id="home">
+  <div class="hero">
+    <svg viewBox="0 0 100 90" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF9DBB"/><stop offset="1" stop-color="#E0356B"/></linearGradient></defs><path d="M50 85C10 55 0 30 18 14 32 2 46 10 50 22 54 10 68 2 82 14 100 30 90 55 50 85Z" fill="url(#g)"/></svg>
+    <h1>সাগর &amp; সীমা</h1>
+    <p id="hi"></p>
+  </div>
+  <div class="card letter"><p class="serif" id="msg"></p><small>আজকের চিঠি, শুধু তোমার জন্য</small></div>
+  <div class="row">
+    <div class="card count"><b id="c1">0</b><span>দিন আগে প্রথম দেখা</span></div>
+    <div class="card count"><b id="c2">0</b><span>দিন আগে শেষ দেখা</span></div>
+  </div>
+  <div class="card">
+    <div class="serif" style="text-align:center;font-size:1.2rem">এখন কেমন লাগছে?</div>
+    <div class="chips" id="moods"></div>
+    <button id="think">তোমাকে ভাবছি 💞</button>
+    <p class="note" id="note"></p>
+  </div>
+</section>
+
+<section class="tab" id="td">
+  <h2>সত্যি না সাহস?</h2>
+  <p class="sub">লেভেল বেছে নাও, তারপর একটা চাপো</p>
+  <div class="chips" id="lv"></div>
+  <div class="card play" id="play"><span class="serif">কার্ড খুলতে নিচের বাটন চাপো 🎴</span></div>
+  <div class="two"><button id="bt">সত্যি</button><button id="bd" class="ghost">সাহস</button></div>
+  <p class="hint" style="text-align:center;margin-top:12px">যেটুকুতে দুজনেই স্বচ্ছন্দ, শুধু ততটুকুই। পাস দেওয়ার অধিকার সবসময় আছে।</p>
+</section>
+
+<section class="tab" id="snap">
+  <h2>স্ন্যাপ</h2>
+  <p class="sub">ছবি তোলো, ক্যাপশন লেখো, একবার দেখলেই মিলিয়ে যাবে</p>
+  <div class="frame" id="fr"><span>এখানে তোমার ছবি আসবে 📸</span><div class="cap" id="cap"></div></div>
+  <input type="text" id="ct" placeholder="ক্যাপশন লেখো" maxlength="60">
+  <div class="chips" id="flt"></div>
+  <label class="btn" for="file">ক্যামেরা খোলো বা ছবি বেছে নাও</label>
+  <input type="file" id="file" accept="image/*" capture="user">
+  <div class="two"><button id="send">স্ন্যাপ করো ✨</button><button id="clr" class="ghost">মুছে ফেলো</button></div>
+  <p class="note" id="snote"></p>
+</section>
+
+<section class="tab" id="love">
+  <h2>আজকের টাস্ক ও কুপন</h2>
+  <p class="sub">ছোট ছোট কাজ, ছোট ছোট আদর</p>
+  <div class="card">
+    <div class="serif" style="font-size:1.2rem;margin-bottom:6px">আজকের টাস্ক</div>
+    <p id="task" style="margin:0 0 12px"></p>
+    <button id="done">করে ফেলেছি 💗</button>
+    <p class="streak" id="streak"></p><p class="streak" id="pts"></p><div class="chips" id="bdg"></div>
+    <button class="ghost" id="sur" style="margin-top:10px">🎁 সারপ্রাইজ টাস্ক</button><p class="note" id="surn"></p>
+  </div>
+  <div class="serif" style="font-size:1.2rem;margin:18px 4px 10px">লাভ কুপন, একবারই ব্যবহার করা যাবে</div>
+  <div id="cps"></div>
+</section>
+
+<section class="tab" id="games">
+  <h2>একসাথে খেলি</h2><p class="sub">বেছে নাও কী খেলবে</p>
+  <div class="chips" id="gm"></div>
+  <div class="panel on card" id="g0"><div class="serif" id="qq" style="font-size:1.3rem;text-align:center"></div><div class="chips" id="qo"></div><p class="note" id="qn"></p></div>
+  <div class="panel card" id="g1"><div class="grid" id="mg" style="grid-template-columns:repeat(4,1fr)"></div><p class="note" id="mn"></p><button class="ghost" id="mr">নতুন করে সাজাও</button></div>
+  <div class="panel card" id="g2"><div class="grid" id="tg" style="grid-template-columns:repeat(3,1fr)"></div><p class="note" id="tn"></p><button class="ghost" id="tr">আবার খেলো</button></div>
+  <div class="panel card" id="g3"><canvas id="cv" width="360" height="360"></canvas><div class="chips" id="cc"></div><button class="ghost" id="cclr">মুছে ফেলো</button><p class="hint" style="text-align:center">পরের ধাপে সীমাও একই ক্যানভাসে আঁকবে।</p></div>
+  <div class="panel card" id="g4"><div class="serif" style="text-align:center;font-size:1.2rem;margin-bottom:10px">কোনটা বেছে নেবে?</div><div class="two" style="grid-template-columns:1fr"><button id="wa"></button><button class="ghost" id="wb"></button></div><p class="note" id="wnote"></p></div>
+</section>
+
+<section class="tab" id="mem">
+  <h2>আমাদের স্মৃতি</h2><p class="sub">যা কিছু মনে রাখতে চাও</p>
+  <div class="chips" id="mm"></div>
+  <div class="panel on" id="m0"><div id="tl"></div><div class="card"><input type="text" id="tlt" placeholder="কী হয়েছিল?"><input type="date" id="tld" aria-label="তারিখ"><button id="tla">স্মৃতিতে যোগ করো</button></div></div>
+  <div class="panel" id="m1"><div class="card"><textarea id="nt" rows="3" placeholder="সীমার জন্য গোপন চিঠি লেখো"></textarea><span class="hint">কবে খুলবে?</span><input type="date" id="nd" aria-label="খোলার তারিখ"><button id="na">তালা দিয়ে রাখো 🔒</button></div><div id="nl"></div></div>
+  <div class="panel" id="m2"><div id="bl"></div><div class="card"><input type="text" id="bt2" placeholder="একসাথে কী করতে চাও?"><button id="ba">লিস্টে যোগ করো</button></div></div>
+</section>
+</main>
+
+<div id="lg"><div class="card"><h2>আমাদের ছোট্ট পৃথিবী 💗</h2><p class="sub">শুধু আমরা দুজন</p><input type="text" id="lge" placeholder="ইমেইল" autocomplete="username"><input type="password" id="lgp" placeholder="পাসওয়ার্ড" autocomplete="current-password"><button id="lgb">ঢুকি</button><button class="ghost" id="lgf" style="margin-top:10px">পাসওয়ার্ড ভুলে গেছি</button><p class="note" id="lgn"></p></div></div>
+<div id="view"><div class="frame" id="vf"></div><div id="vt" class="serif" style="font-size:1.3rem"></div></div>
+
+<nav aria-label="মেনু">
+  <button data-t="home" class="on"><span>🏡</span>আমরা</button>
+  <button data-t="td"><span>🎴</span>সত্যি-সাহস</button>
+  <button data-t="games"><span>🎮</span>খেলা</button>
+  <button data-t="snap"><span>📸</span>স্ন্যাপ</button>
+  <button data-t="mem"><span>💞</span>স্মৃতি</button>
+  <button data-t="love"><span>🎟️</span>টাস্ক</button>
+</nav>
+
+<script>
+var FIRST=new Date(2022,6,24), LAST=new Date(2026,10,2);
+var MSGS=["তুমি দূরে আছো, কিন্তু আমার প্রতিটা দিনের ভেতরেই আছো।","তোমার একটা হাসি আমার পুরো দিনটা সুন্দর করে দেয়।","দূরত্ব শুধু একটা সংখ্যা, আমার মন তো তোমার পাশেই থাকে।","আজ যত দূরেই থাকি, রাতে একই আকাশের নিচে আমরা দুজন।","তুমি আমার সবচেয়ে প্রিয় অভ্যাস।","তোমাকে ভালোবাসি, আজও, কালও, সবসময়।"];
+var TASKS=["আজ একটা হাসিমুখের সেলফি পাঠাও।","আমাকে ৩টা কারণ বলো, কেন আমাকে ভালোবাসো।","তোমার প্রিয় গানটা আমাকে পাঠাও।","একটা ভয়েস নোটে আমাকে শুভরাত্রি বলো।","পরের দেখায় আমরা কী করবো, একটা জিনিস বলো।","আমার সবচেয়ে ভালো লাগার একটা গুণ বলো।"];
+var CPS=["একটা লম্বা ফোনকল, রাত জেগে, শুধু আমরা দুজন","ভিডিও কলে ফরমায়েশি একটা ফ্লাইং কিস 😘","আমার জন্য একটা গান গেয়ে শোনানো","একদিন সব আবদার মেনে নেওয়া, কোনো তর্ক ছাড়া","ফিসফিস করে ভয়েস নোটে একটা সিক্রেট বলা","দেখা হলে ১০ মিনিটের একটানা জড়িয়ে ধরা 🤗"];
+var LV=["মিষ্টি 🌸","দুষ্টু 😈","গরম 🔥"];
+var TD={
+t:[["আমাদের প্রথম দেখায় আমার সম্পর্কে তোমার প্রথম কী মনে হয়েছিল?","আমার কোন জিনিসটা তোমার সবচেয়ে প্রিয়?","শেষ দেখার কোন মুহূর্তটা তুমি সবচেয়ে বেশি মিস করো?"],
+["আমাকে নিয়ে তোমার সবচেয়ে দুষ্টু ভাবনা কোনটা?","আমার কোন ছবি দেখলে তোমার বুক ধুকপুক করে?","দেখা হলে প্রথমেই আমার কাছে কী চাইবে?"],
+["দেখা হলে আমার কাছ থেকে কী কী আদর চাও, তিনটা বলো।","আমার কোথায় ছুঁয়ে দিলে তোমার সবচেয়ে ভালো লাগে?","কল্পনায় আমাদের সবচেয়ে রোমান্টিক রাতটা কেমন?"]],
+d:[["এখনই একটা হার্ট আঁকা ছবি তুলে পাঠাও।","আমার নাম দিয়ে একটা ছোট কবিতা বানিয়ে বলো।","৩০ সেকেন্ডের ভয়েসে আমাকে নতুন নতুন ভাবে ‘ভালোবাসি’ বলো।"],
+["ফিসফিস করে একটা ভয়েস নোট পাঠাও।","ঘুমানোর আগে আমাকে একটা গুড নাইট কিস পাঠাও।","চোখ বন্ধ করে বলো, আমি পাশে থাকলে এখন কী করতে।"],
+["ভিডিও কলে ৩০ সেকেন্ড চোখে চোখ রেখে কিছু না বলে তাকিয়ে থাকো।","যতটুকুতে তুমি স্বচ্ছন্দ, ততটুকু ফ্লার্টি একটা ভয়েস মেসেজ রেকর্ড করো।","আমাকে এমন একটা কথা বলো যেটা শুনলে আমি লজ্জা পাবো।"]]};
+var FL=[["সাধারণ",""],["গোলাপি","sepia(.45) hue-rotate(-30deg) saturate(1.8)"],["স্বপ্ন","brightness(1.1) saturate(1.4) blur(.6px)"],["পুরোনো","sepia(.8) contrast(1.1)"]];
+function $(i){return document.getElementById(i)}
+function bn(n){return n.toLocaleString("bn-BD")}
+function days(d){return Math.floor((Date.now()-d.getTime())/864e5)}
+function key(d){return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()}
+function load(k,f){try{return JSON.parse(localStorage.getItem(k))||f}catch(e){return f}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var now=new Date(), doy=Math.floor((now-new Date(now.getFullYear(),0,0))/864e5), h=now.getHours();
+
+$("hi").textContent=(h<5?"শুভ রাত্রি":h<12?"শুভ সকাল":h<17?"শুভ দুপুর":h<20?"শুভ সন্ধ্যা":"শুভ রাত্রি")+", আজকের দিনটা তোমাদের";
+$("msg").textContent="“"+MSGS[doy%MSGS.length]+"”";
+$("c1").textContent=bn(days(FIRST)); $("c2").textContent=bn(days(LAST));
+$("task").textContent=TASKS[doy%TASKS.length];
+
+var tabs=document.querySelectorAll("nav button");
+tabs.forEach(function(b){b.onclick=function(){
+  tabs.forEach(function(x){x.classList.toggle("on",x===b)});
+  document.querySelectorAll(".tab").forEach(function(s){s.classList.toggle("on",s.id===b.dataset.t)});
+  window.scrollTo(0,0);
+}});
+
+function chips(id,list,cb,start){
+  var box=$(id), sel=start;
+  list.forEach(function(t,i){var c=document.createElement("button");c.className="chip"+(i===sel?" on":"");c.textContent=t;
+    c.onclick=function(){sel=i;[].forEach.call(box.children,function(x,j){x.classList.toggle("on",j===sel)});cb(i)};box.appendChild(c)});
+}
+chips("moods",["😊 খুশি","🥰 প্রেমে","😔 মিস করছি","😴 ক্লান্ত","😈 দুষ্টু মুড","🥺 জড়িয়ে ধরো"],function(i){$("note").textContent="পরের ধাপে সীমা তোমার মুড দেখতে পাবে।"},-1);
+
+function burst(){for(var i=0;i<14;i++){var s=document.createElement("span");s.className="heart";s.textContent=["💗","💖","💕","🌸"][i%4];
+  s.style.left=(Math.random()*90+3)+"%";s.style.animationDelay=(Math.random()*.5)+"s";document.body.appendChild(s);
+  setTimeout(function(e){e.remove()}.bind(null,s),3000)}}
+$("think").onclick=function(){burst();$("note").textContent="এখন শুধু ডেমো। পরের ধাপে এই হার্ট সীমার ফোনে পৌঁছাবে।"};
+
+var lv=0,last="";
+chips("lv",LV,function(i){lv=i},0);
+function draw(t){
+  var a=TD[t][lv],x;do{x=a[Math.floor(Math.random()*a.length)]}while(x===last&&a.length>1);last=x;
+  $("play").innerHTML='<span class="badge">'+(t==="t"?"সত্যি বলো":"সাহস দেখাও")+'</span><p class="serif">'+x+'</p>';
+}
+$("bt").onclick=function(){draw("t")}; $("bd").onclick=function(){draw("d")};
+
+var flt="",img=null;
+chips("flt",FL.map(function(f){return f[0]}),function(i){flt=FL[i][1];if(img)img.style.filter=flt},0);
+$("ct").oninput=function(){var c=$("cap");c.textContent=this.value;c.style.display=this.value?"block":"none"};
+$("file").onchange=function(){var f=this.files[0];if(!f)return;
+  var fr=$("fr");if(img)img.remove();img=document.createElement("img");img.alt="তোমার ছবি";img.src=URL.createObjectURL(f);img.style.filter=flt;
+  fr.insertBefore(img,fr.firstChild);fr.querySelector("span").style.display="none"};
+$("clr").onclick=function(){if(img){img.remove();img=null}$("fr").querySelector("span").style.display="";$("ct").value="";$("cap").style.display="none";$("snote").textContent=""};
+$("send").onclick=function(){
+  if(!img){$("snote").textContent="আগে একটা ছবি তোলো বা বেছে নাও।";return}
+  var v=$("view"),n=5;$("vf").innerHTML="";var c=img.cloneNode();$("vf").appendChild(c);
+  if($("ct").value){var d=document.createElement("div");d.className="cap";d.style.display="block";d.textContent=$("ct").value;$("vf").appendChild(d)}
+  v.style.display="flex";$("vt").textContent=bn(n)+" সেকেন্ডে মিলিয়ে যাবে";
+  var t=setInterval(function(){n--;if(n<=0){clearInterval(t);v.style.display="none";$("snote").textContent="স্ন্যাপ মিলিয়ে গেছে ✨ (এখন শুধু ডেমো, পরে সীমার ফোনে যাবে)"}else $("vt").textContent=bn(n)+" সেকেন্ডে মিলিয়ে যাবে"},1000);
+};
+
+var dl=load("doneDays",[]);
+function streak(){var d=new Date(),n=0;if(dl.indexOf(key(d))<0)d.setDate(d.getDate()-1);while(dl.indexOf(key(d))>=0){n++;d.setDate(d.getDate()-1)}return n}
+function rd(){var ok=dl.indexOf(key(new Date()))>=0,s=streak();$("done").disabled=ok;$("done").textContent=ok?"আজকের টাস্ক শেষ ✓":"করে ফেলেছি 💗";$("streak").textContent=s?"Love Streak 🔥 "+bn(s)+" দিন":""}
+$("done").onclick=function(){var k=key(new Date());if(dl.indexOf(k)<0){dl.push(k);save("doneDays",dl)}rd();burst()};rd();
+
+var used=load("cpUsed",[]);
+function rc(){$("cps").innerHTML="";CPS.forEach(function(t,i){var u=used.indexOf(i)>=0,d=document.createElement("div");d.className="card ticket"+(u?" used":"");
+  d.innerHTML="<p></p>";d.firstChild.textContent=t;var b=document.createElement("button");b.textContent=u?"ব্যবহৃত":"ব্যবহার করো";b.disabled=u;
+  b.onclick=function(){used.push(i);save("cpUsed",used);rc();burst()};d.appendChild(b);$("cps").appendChild(d)})}
+rc();
+function pad(n){return n<10?"0"+n:""+n}
+var TODAY=now.getFullYear()+"-"+pad(now.getMonth()+1)+"-"+pad(now.getDate());
+function fd(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2]).toLocaleDateString("bn-BD",{day:"numeric",month:"long",year:"numeric"})}
+function panels(p,n,i){for(var j=0;j<n;j++)$(p+j).classList.toggle("on",j===i)}
+function shuf(a){return a.sort(function(){return Math.random()-.5})}
+chips("gm",["🧠 কুইজ","🃏 মেমরি","⭕ টিক-ট্যাক","🎨 আঁকি","🤔 কোনটা?"],function(i){panels("g",5,i)},0);
+chips("mm",["🕰️ টাইমলাইন","💌 লাভ নোট","📝 বাকেট লিস্ট"],function(i){panels("m",3,i)},0);
+
+var gw=load("gameWins",0);
+var _rd=rd;rd=function(){_rd();var s=streak(),p=dl.length*10+gw*5,bx=$("bdg");$("pts").textContent="💎 "+bn(p)+" পয়েন্ট";bx.innerHTML="";
+ [[3,"🌱 ৩ দিন"],[7,"🔥 ৭ দিন"],[30,"👑 ৩০ দিন"]].forEach(function(b){var c=document.createElement("span");c.className="chip"+(s>=b[0]?" on":"");c.textContent=(s>=b[0]?"":"🔒 ")+b[1];bx.appendChild(c)})};
+rd();
+var SUR=["💌 ১০ মিনিটের মধ্যে আমাকে একটা ভালোবাসার লাইন লিখে পাঠাও।","📸 তুমি এখন যেখানে আছো, সেই জায়গার একটা ছবি পাঠাও।","🎤 আমাকে একটা লাইন গেয়ে শোনাও।","😘 একটা ফ্লাইং কিস ভিডিও পাঠাও।","🌙 আজ রাতে আমাকে ভাবার একটা কারণ বলো।"];
+$("sur").onclick=function(){$("surn").textContent=SUR[Math.floor(Math.random()*SUR.length)]+" (পরের ধাপে এটা হঠাৎ নোটিফিকেশনে আসবে)";burst()};
+
+var QZ=[["আমার প্রিয় রং কী?",["গোলাপি","নীল","কালো","সাদা"]],["ছুটির দিনে আমার পছন্দ কী?",["ঘুম","ঘোরা","মুভি","আড্ডা"]],["আমার প্রিয় খাবার?",["বিরিয়ানি","চাইনিজ","ফুচকা","পিৎজা"]],["আমাকে সবচেয়ে বেশি কী রাগায়?",["দেরি","মিথ্যা","অবহেলা","চুপ থাকা"]],["ডেটে আমি কোথায় যেতে চাই?",["নদীর ধার","ক্যাফে","পার্ক","শহরের বাইরে"]]],qi=0;
+function rq(){var q=QZ[qi],o=$("qo");o.innerHTML="";
+ if(!q){$("qq").textContent="সব উত্তর সেভ হয়েছে ✨";var b=document.createElement("button");b.className="ghost";b.textContent="আবার খেলো";b.onclick=function(){qi=0;rq()};o.appendChild(b);$("qn").textContent="সীমাও খেললে দুজনের উত্তর মিলিয়ে পয়েন্ট দেওয়া হবে।";return}
+ $("qq").textContent=bn(qi+1)+"/"+bn(QZ.length)+"  "+q[0];$("qn").textContent="নিজের উত্তরটা বেছে নাও";
+ q[1].forEach(function(t){var c=document.createElement("button");c.className="chip";c.textContent=t;c.onclick=function(){qi++;rq()};o.appendChild(c)})}
+rq();
+
+var ME=["🌹","💌","🍫","💍","🧸","🌸"],mf=[],ml=false,mv=0,mc=[];
+function win(){gw++;save("gameWins",gw);rd();burst()}
+function mk(){mc=shuf(ME.concat(ME));mf=[];ml=false;mv=0;var g=$("mg");g.innerHTML="";$("mn").textContent="জোড়া মেলাও";
+ mc.forEach(function(e,i){var b=document.createElement("button");b.className="cell";b.textContent="❔";
+  b.onclick=function(){if(ml||b.dataset.ok||mf.indexOf(i)>=0)return;b.textContent=e;mf.push(i);
+   if(mf.length===2){mv++;var a=mf[0],c=mf[1],A=g.children[a],C=g.children[c];
+    if(mc[a]===mc[c]){A.dataset.ok=1;C.dataset.ok=1;mf=[];if(g.querySelectorAll("[data-ok]").length===12){$("mn").textContent="জিতে গেছো! "+bn(mv)+" চালে 🎉";win()}}
+    else{ml=true;setTimeout(function(){A.textContent="❔";C.textContent="❔";mf=[];ml=false},700)}}};
+  g.appendChild(b)})}
+$("mr").onclick=mk;mk();
+
+var TM=["💗","🌸"],TLN=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]],tb,tt,tw;
+function tk(){tb=Array(9).fill("");tt=0;tw=false;var g=$("tg");g.innerHTML="";$("tn").textContent="💗 এর পালা";
+ for(var i=0;i<9;i++)(function(i){var b=document.createElement("button");b.className="cell";b.onclick=function(){if(tw||tb[i])return;tb[i]=TM[tt];b.textContent=TM[tt];
+  var w=TLN.some(function(l){return tb[l[0]]&&tb[l[0]]===tb[l[1]]&&tb[l[0]]===tb[l[2]]});
+  if(w){tw=true;$("tn").textContent=TM[tt]+" জিতেছে! 🎉";win()}
+  else if(tb.every(Boolean)){tw=true;$("tn").textContent="ড্র! আবার খেলো 😄"}
+  else{tt=1-tt;$("tn").textContent=TM[tt]+" এর পালা"}};g.appendChild(b)})(i)}
+$("tr").onclick=tk;tk();
+
+var cv=$("cv"),cx=cv.getContext("2d"),col="#E0356B",dr=false,CC=["#E0356B","#FF8FB1","#8E2DE2","#4A1530"];
+cx.lineWidth=6;cx.lineCap="round";cx.lineJoin="round";
+function pt(e){var r=cv.getBoundingClientRect();return[(e.clientX-r.left)*cv.width/r.width,(e.clientY-r.top)*cv.height/r.height]}
+cv.onpointerdown=function(e){dr=true;var p=pt(e);cx.beginPath();cx.moveTo(p[0],p[1]);cv.setPointerCapture(e.pointerId)};
+cv.onpointermove=function(e){if(!dr)return;var p=pt(e);cx.strokeStyle=col;cx.lineTo(p[0],p[1]);cx.stroke()};
+cv.onpointerup=function(){dr=false};
+chips("cc",["গোলাপি","হালকা","বেগুনি","গাঢ়"],function(i){col=CC[i]},0);
+$("cclr").onclick=function(){cx.clearRect(0,0,cv.width,cv.height)};
+
+var W=[["ভিডিও কলে সারারাত গল্প","একদিন সামনাসামনি দেখা"],["চিঠি লিখে ভালোবাসা জানানো","গান গেয়ে শোনানো"],["আমাকে সারপ্রাইজ দেওয়া","আমার সারপ্রাইজ পাওয়া"],["পাহাড়ে একসাথে ঘোরা","সমুদ্রের ধারে হাতে হাত রেখে হাঁটা"],["দুষ্টু মেসেজে সারাদিন খুনসুটি","ফিসফিস ভয়েসে একটা রাত"]],wi=-1;
+function nextW(){var n;do{n=Math.floor(Math.random()*W.length)}while(n===wi);wi=n;$("wa").textContent=W[n][0];$("wb").textContent=W[n][1]}
+$("wa").onclick=$("wb").onclick=function(){$("wnote").textContent="তোমার পছন্দ সেভ ✓ (সীমার সাথে মেলানো হবে পরের ধাপে)";setTimeout(nextW,800)};nextW();
+
+var TL2=load("tl",[{d:"2022-07-24",t:"প্রথম দেখা, রাবি পরীক্ষা দিতে এসে 💞"},{d:"2026-11-02",t:"শেষ দেখা 🥹"}]);
+function rt(){TL2.sort(function(a,b){return a.d<b.d?-1:1});$("tl").innerHTML="";TL2.forEach(function(x){var d=document.createElement("div");d.className="card item";d.innerHTML="<b class='serif' style='color:var(--rose)'></b><span></span>";d.firstChild.textContent=fd(x.d);d.lastChild.textContent=x.t;$("tl").appendChild(d)})}
+$("tla").onclick=function(){var t=$("tlt").value.trim(),d=$("tld").value;if(!t||!d)return;TL2.push({d:d,t:t});save("tl",TL2);$("tlt").value="";rt()};rt();
+var NT=load("nt",[]);
+function rn(){$("nl").innerHTML="";NT.forEach(function(x){var d=document.createElement("div");d.className="card item";d.textContent=x.d>TODAY?"🔒 "+fd(x.d)+" তারিখে খুলবে":"💌 "+x.t;$("nl").appendChild(d)})}
+$("na").onclick=function(){var t=$("nt").value.trim(),d=$("nd").value;if(!t||!d)return;NT.push({t:t,d:d});save("nt",NT);$("nt").value="";rn()};rn();
+var BL=load("bl",[{t:"একসাথে সমুদ্র দেখা 🌊"},{t:"তারা ভরা আকাশের নিচে বসা ✨"},{t:"একই কফি দুজনে ভাগ করে খাওয়া ☕"}]);
+function rb(){$("bl").innerHTML="";BL.forEach(function(x){var d=document.createElement("button");d.className="chip";d.style.cssText="display:block;width:100%;text-align:left;margin-bottom:8px;border-radius:16px";d.textContent=(x.x?"✅ ":"⬜ ")+x.t;if(x.x)d.style.opacity=.6;d.onclick=function(){x.x=!x.x;save("bl",BL);rb();if(x.x)burst()};$("bl").appendChild(d)})}
+$("ba").onclick=function(){var t=$("bt2").value.trim();if(!t)return;BL.push({t:t});save("bl",BL);$("bt2").value="";rb()};rb();
+
+/* ===== Firebase: লগইন ও রিয়েল-টাইম ===== */
+var CFG={apiKey:"AIzaSyBtUBx1x8NwrJbU-Z_qHAcqWueAlqNYdEw",authDomain:"ownworld-42078.firebaseapp.com",projectId:"ownworld-42078",storageBucket:"ownworld-42078.firebasestorage.app",messagingSenderId:"51897813200",appId:"1:51897813200:web:be4bade72549a53edb36d5"};
+var EM_S="sagorislam1973@gmail.com",PN={sagor:"সাগর",shima:"সীমা"},MOODS=["😊 খুশি","🥰 প্রেমে","😔 মিস করছি","😴 ক্লান্ত","😈 দুষ্টু মুড","🥺 জড়িয়ে ধরো"];
+var FBV="10.12.2",AU,DB,WHO,PW,snapIn=null;
+function ldOne(n,cb){var u=["https://cdnjs.cloudflare.com/ajax/libs/firebase/"+FBV+"/firebase-"+n+"-compat.min.js","https://cdn.jsdelivr.net/npm/firebase@"+FBV+"/firebase-"+n+"-compat.js"],i=0;
+ (function t(){var s=document.createElement("script");s.src=u[i];s.onload=function(){cb()};s.onerror=function(){i++;if(i<u.length)t();else cb(1)};document.head.appendChild(s)})()}
+ldOne("app",function(e){if(e)return fail();ldOne("auth",function(e){if(e)return fail();ldOne("firestore",function(e){if(e)return fail();boot()})})});
+function fail(){$("lgn").textContent="সার্ভারের সাথে যুক্ত হওয়া যায়নি। ইন্টারনেট দেখে পেজ রিলোড করো।"}
+
+var pm=document.createElement("p");pm.className="note";pm.id="pmood";$("note").parentNode.appendChild(pm);
+var ib=document.createElement("button");ib.id="inbox";ib.className="ghost";ib.style.cssText="display:none;margin-bottom:12px";ib.textContent="📩 নতুন স্ন্যাপ এসেছে, দেখো";$("snap").insertBefore(ib,$("fr"));
+
+function boot(){
+ firebase.initializeApp(CFG);AU=firebase.auth();DB=firebase.firestore();
+ AU.onAuthStateChanged(function(u){
+  if(!u){$("lg").style.display="flex";return}
+  WHO=(u.email||"").toLowerCase()===EM_S?"sagor":"shima";PW=WHO==="sagor"?"shima":"sagor";
+  $("lg").style.display="none";start();
+ });
+}
+$("lgb").onclick=function(){
+ if(!AU){fail();return}
+ $("lgn").textContent="";
+ AU.signInWithEmailAndPassword($("lge").value.trim().toLowerCase(),$("lgp").value).catch(function(er){
+  var m={"auth/invalid-credential":"ইমেইল বা পাসওয়ার্ড ভুল।","auth/wrong-password":"পাসওয়ার্ড ভুল।","auth/user-not-found":"এই ইমেইলে অ্যাকাউন্ট নেই।","auth/invalid-email":"ইমেইলটা ঠিক করে লেখো।","auth/operation-not-allowed":"Firebase-এ Email/Password চালু করা হয়নি।","auth/network-request-failed":"ইন্টারনেট বা নেটওয়ার্কে সমস্যা।","auth/too-many-requests":"অনেকবার ভুল হয়েছে, একটু পরে চেষ্টা করো।"};
+  $("lgn").textContent=m[er.code]||("সমস্যা: "+er.code);
+ });
+};
+
+var started=false;
+function start(){
+ if(started)return;started=true;
+ var first=true,lastPing=0;
+ DB.doc("live/"+PW).onSnapshot(function(s){
+  var d=s.data()||{};
+  if(d.mood!=null)$("pmood").textContent=PN[PW]+" এখন: "+MOODS[d.mood];
+  if(d.ping){if(!first&&d.ping>lastPing){burst();$("note").textContent=PN[PW]+" তোমাকে ভাবছে 💞"}lastPing=d.ping}
+  first=false;
+  snapIn=d.snap||null;$("inbox").style.display=snapIn?"block":"none";
+ },function(e){$("note").textContent="কানেকশনে সমস্যা: "+e.code+" (Rules ও ডাটাবেস দেখো)"});
+ [].forEach.call($("moods").children,function(b,i){b.addEventListener("click",function(){
+  DB.doc("live/"+WHO).set({mood:i},{merge:true}).then(function(){$("note").textContent="তোমার মুড "+PN[PW]+" দেখতে পাবে 💗"}).catch(function(e){$("note").textContent="সমস্যা: "+e.code})})});
+}
+$("think").onclick=function(){
+ burst();if(!DB)return;
+ DB.doc("live/"+WHO).set({ping:Date.now()},{merge:true}).then(function(){$("note").textContent=PN[PW]+"কে জানানো হয়েছে 💗"}).catch(function(e){$("note").textContent="সমস্যা: "+e.code});
+};
+$("send").onclick=function(){
+ if(!img){$("snote").textContent="আগে একটা ছবি তোলো বা বেছে নাও।";return}
+ if(!DB)return;
+ var w=img.naturalWidth,h=img.naturalHeight,k=Math.min(1,640/Math.max(w,h)),c=document.createElement("canvas");
+ c.width=Math.round(w*k);c.height=Math.round(h*k);var x=c.getContext("2d");x.filter=flt||"none";x.drawImage(img,0,0,c.width,c.height);
+ $("snote").textContent="পাঠানো হচ্ছে...";
+ DB.doc("live/"+WHO).set({snap:{img:c.toDataURL("image/jpeg",.6),cap:$("ct").value,t:Date.now()}},{merge:true})
+  .then(function(){$("snote").textContent="স্ন্যাপ "+PN[PW]+"র কাছে পৌঁছে গেছে ✨";$("clr").onclick()})
+  .catch(function(e){$("snote").textContent="সমস্যা: "+e.code});
+};
+$("inbox").onclick=function(){
+ if(!snapIn)return;
+ var s=snapIn,n=5,v=$("view");$("vf").innerHTML="";
+ var im=document.createElement("img");im.src=s.img;$("vf").appendChild(im);
+ if(s.cap){var d=document.createElement("div");d.className="cap";d.style.display="block";d.textContent=s.cap;$("vf").appendChild(d)}
+ v.style.display="flex";$("vt").textContent=bn(n)+" সেকেন্ডে মিলিয়ে যাবে";
+ var t=setInterval(function(){n--;
+  if(n<=0){clearInterval(t);v.style.display="none";$("vf").innerHTML="";DB.doc("live/"+PW).update({snap:firebase.firestore.FieldValue.delete()})}
+  else $("vt").textContent=bn(n)+" সেকেন্ডে মিলিয়ে যাবে"},1000);
+};
+
+/* ===== বের হও ও পাসওয়ার্ড রিসেট ===== */
+var lo=document.createElement("button");lo.className="ghost";lo.id="lgo";lo.textContent="বের হও";lo.style.marginTop="14px";$("home").appendChild(lo);
+lo.onclick=function(){if(!AU)return;AU.signOut().then(function(){location.reload()})};
+$("lgf").onclick=function(){
+ var e=$("lge").value.trim().toLowerCase();
+ if(!e){$("lgn").textContent="আগে উপরে তোমার ইমেইলটা লেখো।";return}
+ if(!AU){fail();return}
+ AU.sendPasswordResetEmail(e)
+  .then(function(){$("lgn").textContent="রিসেট লিংক ইমেইলে পাঠানো হয়েছে। Spam ফোল্ডারও দেখো।"})
+  .catch(function(er){$("lgn").textContent=er.code==="auth/user-not-found"?"এই ইমেইলে অ্যাকাউন্ট নেই।":"সমস্যা: "+er.code});
+};
+
+/* ===== নোট, রিঅ্যাকশন, রিপ্লে ও নিজের ডেয়ার ===== */
+var RX=["❤️","😘","🥺","😂"],nstart=false,dr2={},dk="d";
+function ft(t){return new Date(t).toLocaleString("bn-BD",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})}
+function who(f){return f===WHO?"তুমি":PN[f]}
+
+var nc=document.createElement("div");nc.className="card";
+nc.innerHTML='<div class="serif" style="font-size:1.25rem;margin-bottom:8px">💌 আমাদের নোট</div><div id="nbl"></div><input type="text" id="nin" placeholder="একটা নোট লেখো..." maxlength="300"><button id="nsend">নোট রাখো</button>';
+$("home").insertBefore(nc,$("home").children[1]);
+
+var dc=document.createElement("div");dc.className="card";dc.style.marginTop="16px";
+dc.innerHTML='<div class="serif" style="font-size:1.25rem;margin-bottom:6px">💝 নিজের মতো করে কার্ড বানাও</div><div class="chips" id="dkc"></div><input type="text" id="din" placeholder="যা খুশি লেখো, ওর জন্য কার্ড হয়ে যাবে" maxlength="200"><button id="dsend">পাঠাও 🎁</button><p class="note" id="dnote"></p><div class="serif" style="font-size:1.25rem;margin:12px 0 8px">🎁 তোমার জন্য আসা কার্ড</div><div id="dinb"></div>';
+$("td").appendChild(dc);
+chips("dkc",["সত্যি","সাহস"],function(i){dk=i?"d":"t"},1);
+
+function renderNotes(qs){
+ [].forEach.call(document.querySelectorAll(".rin"),function(i){dr2[i.dataset.id]=i.value});
+ var box=$("nbl");box.innerHTML="";
+ if(qs.empty){box.innerHTML='<p class="hint">এখনো কোনো নোট নেই। প্রথমটা তুমি লেখো 💗</p>'}
+ qs.forEach(function(doc){
+  var n=doc.data(),id=doc.id,r=n.r||{},d=document.createElement("div");
+  d.style.cssText="border-bottom:1px solid var(--line);padding:10px 0";
+  var h=document.createElement("div");h.className="hint";h.textContent=who(n.from)+", "+ft(n.t);
+  var p=document.createElement("p");p.className="serif";p.style.cssText="margin:4px 0;font-size:1.15rem";p.textContent=n.text;
+  var rx=document.createElement("div");rx.className="chips";rx.style.justifyContent="flex-start";
+  RX.forEach(function(e){var b=document.createElement("button");b.className="chip"+(r[WHO]===e?" on":"");b.textContent=e;b.style.padding="3px 10px";
+   b.onclick=function(){var v={};v["r."+WHO]=r[WHO]===e?firebase.firestore.FieldValue.delete():e;DB.collection("notes").doc(id).update(v)};rx.appendChild(b)});
+  if(r[PW]){var s=document.createElement("span");s.className="hint";s.textContent=PN[PW]+": "+r[PW];rx.appendChild(s)}
+  d.appendChild(h);d.appendChild(p);d.appendChild(rx);
+  (n.replies||[]).forEach(function(q){var x=document.createElement("div");x.style.cssText="margin:4px 0 0 14px;padding-left:10px;border-left:3px solid var(--rose2)";x.textContent=who(q.from)+": "+q.text;d.appendChild(x)});
+  var ri=document.createElement("input");ri.type="text";ri.className="rin";ri.dataset.id=id;ri.placeholder="রিপ্লে দাও";ri.maxLength=200;ri.value=dr2[id]||"";
+  var rb=document.createElement("button");rb.className="ghost";rb.textContent="রিপ্লে";rb.style.padding="8px";
+  rb.onclick=function(){var t=ri.value.trim();if(!t)return;dr2[id]="";DB.collection("notes").doc(id).update({replies:firebase.firestore.FieldValue.arrayUnion({from:WHO,text:t,t:Date.now()})})};
+  d.appendChild(ri);d.appendChild(rb);box.appendChild(d);
+ });
+}
+function renderDares(qs){
+ var box=$("dinb"),a=[];box.innerHTML="";
+ qs.forEach(function(d){var x=d.data();if(!x.done)a.push({id:d.id,x:x})});
+ a.sort(function(p,q){return q.x.t-p.x.t});
+ if(!a.length){box.innerHTML='<p class="hint">এখন কোনো কার্ড নেই।</p>';return}
+ a.forEach(function(o){
+  var d=document.createElement("div");d.className="card";d.style.cssText="margin:0 0 10px;border:1.5px dashed var(--rose2)";
+  var b=document.createElement("span");b.className="badge";b.textContent=(o.x.kind==="t"?"সত্যি বলো":"সাহস দেখাও")+", "+PN[o.x.from]+"র কার্ড";
+  var p=document.createElement("p");p.className="serif";p.style.margin="8px 0";p.textContent=o.x.text;
+  var k=document.createElement("button");k.textContent="করে ফেলেছি ✓";k.onclick=function(){DB.collection("dares").doc(o.id).update({done:true});burst()};
+  d.appendChild(b);d.appendChild(p);d.appendChild(k);box.appendChild(d);
+ });
+}
+$("nsend").onclick=function(){
+ var t=$("nin").value.trim();if(!t||!DB)return;
+ DB.collection("notes").add({from:WHO,text:t,t:Date.now()}).then(function(){$("nin").value=""}).catch(function(e){$("note").textContent="সমস্যা: "+e.code});
+};
+$("dsend").onclick=function(){
+ var t=$("din").value.trim();if(!t||!DB)return;
+ DB.collection("dares").add({for:PW,from:WHO,kind:dk,text:t,t:Date.now(),done:false})
+  .then(function(){$("din").value="";$("dnote").textContent=PN[PW]+"র জন্য কার্ড পাঠানো হয়েছে 🎁"})
+  .catch(function(e){$("dnote").textContent="সমস্যা: "+e.code});
+};
+var _st=start;
+start=function(){
+ _st();if(nstart)return;nstart=true;
+ var f1=true,f2=true;
+ DB.collection("notes").orderBy("t","desc").limit(6).onSnapshot(function(qs){
+  renderNotes(qs);
+  if(!f1)qs.docChanges().forEach(function(c){if(c.type==="added"&&c.doc.data().from!==WHO){burst();$("note").textContent=PN[PW]+" একটা নোট রেখেছে 💌"}});
+  f1=false;
+ },function(e){$("nbl").textContent="নোটে সমস্যা: "+e.code});
+ DB.collection("dares").where("for","==",WHO).onSnapshot(function(qs){
+  renderDares(qs);
+  if(!f2)qs.docChanges().forEach(function(c){if(c.type==="added"){burst();$("note").textContent=PN[PW]+" তোমার জন্য একটা কার্ড পাঠিয়েছে 🎁"}});
+  f2=false;
+ },function(e){$("dnote").textContent="কার্ডে সমস্যা: "+e.code});
+};
+
+/* ===== কাউন্টডাউন, প্রশ্ন, হাত ধরা, ভয়েস, চিঠি, নোটিফিকেশন ===== */
+function mk2(h){var d=document.createElement("div");d.className="card";d.innerHTML=h;$("home").insertBefore(d,$("lgo"));return d}
+var T='<div class="serif" style="font-size:1.2rem;margin-bottom:6px">';
+mk2('<div class="hint">পরের দেখা হতে বাকি</div><div class="serif" id="cdv" style="font-size:2rem;color:var(--rose);margin:4px 0">—</div><input type="date" id="cdi" aria-label="পরের দেখার তারিখ"><button class="ghost" id="cdb">তারিখ ঠিক করো</button>');
+mk2(T+'🤝 হাত ধরো</div><p class="hint" id="hn" style="margin:0 0 12px">দুজনে একসাথে ধরলে জ্বলে উঠবে</p><div id="hp">🤍</div>');
+mk2(T+'❓ আজকের প্রশ্ন</div><p class="serif" id="dq" style="font-size:1.15rem;margin:6px 0"></p><div id="da"></div>');
+mk2(T+'🎙️ ভয়েস নোট</div><button id="vrec">🎙️ রেকর্ড শুরু করো</button><p class="note" id="vn"></p><div id="vl"></div>');
+mk2(T+'🔔 নোটিফিকেশন</div><p class="hint" style="margin:0 0 10px">অ্যাপ খোলা বা ব্যাকগ্রাউন্ডে থাকলে ফোনে জানাবে।</p><button class="ghost" id="nfb">চালু করো</button>');
+
+var ICON=['<path d="M3 11l9-8 9 8M5 10v10h14V10"/>','<rect x="5" y="3" width="12" height="17" rx="2"/><path d="M9 21h9a2 2 0 002-2V8"/>','<rect x="3" y="8" width="18" height="10" rx="5"/><path d="M8 11v4M6 13h4M16 12h.01M18 14h.01"/>','<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>','<path d="M12 20s-7-4.4-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.6-7 10-7 10z"/>','<path d="M3 8a2 2 0 002-2h14a2 2 0 002 2v3a2 2 0 000 4v3a2 2 0 00-2 2H5a2 2 0 00-2-2v-3a2 2 0 000-4z"/>'];
+document.querySelectorAll("nav button").forEach(function(b,i){var s=b.querySelector("span");if(s){var v=document.createElement("span");v.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+ICON[i]+'</svg>';b.replaceChild(v,s)}});
+
+function notify(t){
+ try{if(navigator.vibrate)navigator.vibrate([120,60,120])}catch(e){}
+ if(!("Notification" in window)||Notification.permission!=="granted"||!document.hidden||!navigator.serviceWorker)return;
+ navigator.serviceWorker.getRegistration().then(function(r){if(r)r.showNotification("আমাদের পৃথিবী",{body:t})});
+}
+var _b=burst;burst=function(){_b();setTimeout(function(){notify($("note").textContent)},60)};
+$("nfb").onclick=function(){
+ if(!("Notification" in window)){$("nfb").textContent="এই ব্রাউজারে চলবে না";return}
+ Notification.requestPermission().then(function(p){if(p==="granted"){navigator.serviceWorker.register("sw.js");$("nfb").textContent="চালু আছে ✓"}else $("nfb").textContent="অনুমতি দেওয়া হয়নি"});
+};
+if("Notification" in window&&Notification.permission==="granted"&&navigator.serviceWorker){navigator.serviceWorker.register("sw.js");$("nfb").textContent="চালু আছে ✓"}
+
+var NEXT=null;
+setInterval(function(){var e=$("cdv");if(!NEXT){e.textContent="তারিখ ঠিক করো";return}
+ var p=NEXT.split("-"),ms=new Date(+p[0],+p[1]-1,+p[2])-Date.now();
+ if(ms<-864e5){e.textContent="নতুন তারিখ ঠিক করো";return}
+ if(ms<=0){e.textContent="আজ দেখা! 🥰";return}
+ e.textContent=bn(Math.floor(ms/864e5))+" দিন "+bn(Math.floor(ms%864e5/36e5))+" ঘণ্টা"},1000);
+$("cdb").onclick=function(){var d=$("cdi").value;if(d&&DB)DB.doc("meta/next").set({d:d})};
+
+var QS=["এই সপ্তাহে কোন মুহূর্তে আমাকে সবচেয়ে বেশি মিস করেছো?","আমাদের একসাথে কাটানো সবচেয়ে প্রিয় দিনটা কোনটা?","আমার কোন অভ্যাসটা তোমার সবচেয়ে ভালো লাগে?","পরের দেখায় প্রথম কী করতে চাও?","আজ তোমার দিনের সবচেয়ে ভালো জিনিস কী ছিল?","আমাদের নিয়ে তোমার একটা স্বপ্নের কথা বলো।","আমার কোন কথাটা তোমার মনে গেঁথে আছে?","এখন আমাকে কাছে পেলে কী করতে?"];
+$("dq").textContent=QS[doy%QS.length];
+function rA(d){var b=$("da"),m=d[WHO],p=d[PW];b.innerHTML="";
+ function ln(t){var x=document.createElement("p");x.style.margin="4px 0";x.textContent=t;b.appendChild(x)}
+ if(m){ln("তুমি: "+m);ln(p?PN[PW]+": "+p:PN[PW]+"র উত্তরের অপেক্ষায়...");return}
+ if(p)ln(PN[PW]+" উত্তর দিয়ে ফেলেছে, তুমি দিলে দেখতে পাবে।");
+ var i=document.createElement("input");i.type="text";i.placeholder="তোমার উত্তর";i.maxLength=300;
+ var k=document.createElement("button");k.textContent="উত্তর দাও";
+ k.onclick=function(){var t=i.value.trim();if(!t)return;var o={};o[WHO]=t;DB.doc("answers/"+TODAY).set(o,{merge:true})};
+ b.appendChild(i);b.appendChild(k);
+}
+
+var myH=false,hT=null,pH=0,pRecv=0,bothH=false;
+function setHold(v){DB.doc("live/"+WHO).set({hold:v},{merge:true})}
+function pHold(){return pH>0&&Date.now()-pRecv<3500}
+function hv(){var b=myH&&pHold(),e=$("hp");e.className=b?"both":myH?"me":"";
+ e.textContent=b?"💗":myH?"🤍":"🤍";
+ $("hn").textContent=b?"দুজনে হাত ধরে আছো 💗":myH?PN[PW]+"র অপেক্ষায়...":pHold()?PN[PW]+" হাত ধরে আছে, তুমিও ধরো!":"দুজনে একসাথে ধরলে জ্বলে উঠবে";
+ if(b&&!bothH&&navigator.vibrate)navigator.vibrate([200,100,200]);bothH=b}
+function stopH(){if(!myH)return;myH=false;clearInterval(hT);setHold(0);hv()}
+$("hp").onpointerdown=function(e){e.preventDefault();if(!DB||myH)return;myH=true;setHold(Date.now());hT=setInterval(function(){setHold(Date.now())},1000);hv()};
+["pointerup","pointercancel","pointerleave"].forEach(function(ev){$("hp").addEventListener(ev,stopH)});
+$("hp").addEventListener("contextmenu",function(e){e.preventDefault()});
+setInterval(hv,700);
+
+var mr,chunks,rt;
+$("vrec").onclick=function(){
+ if(mr&&mr.state==="recording"){mr.stop();return}
+ if(!DB||!navigator.mediaDevices){$("vn").textContent="এই ব্রাউজারে রেকর্ড চলবে না।";return}
+ navigator.mediaDevices.getUserMedia({audio:true}).then(function(st){
+  chunks=[];mr=new MediaRecorder(st,{audioBitsPerSecond:16000});
+  mr.ondataavailable=function(e){chunks.push(e.data)};
+  mr.onstop=function(){clearTimeout(rt);st.getTracks().forEach(function(t){t.stop()});$("vrec").textContent="🎙️ রেকর্ড শুরু করো";
+   var fr=new FileReader();fr.onload=function(){
+    if(fr.result.length>900000){$("vn").textContent="অনেক বড় হয়ে গেছে, ছোট করে আবার রেকর্ড করো।";return}
+    DB.collection("voices").add({from:WHO,data:fr.result,t:Date.now()}).then(function(){$("vn").textContent="পাঠানো হয়েছে 💗"}).catch(function(e){$("vn").textContent="সমস্যা: "+e.code})};
+   fr.readAsDataURL(new Blob(chunks,{type:mr.mimeType}))};
+  mr.start();$("vrec").textContent="⏹️ থামাও (সর্বোচ্চ ৩০ সেকেন্ড)";rt=setTimeout(function(){mr.stop()},30000);
+ }).catch(function(){$("vn").textContent="মাইক্রোফোনের অনুমতি দাও।"});
+};
+function rV(qs){var b=$("vl");b.innerHTML="";
+ qs.forEach(function(d){var x=d.data(),w=document.createElement("div"),h=document.createElement("div"),a=document.createElement("audio");
+  w.style.marginTop="10px";h.className="hint";h.textContent=who(x.from)+", "+ft(x.t);a.controls=true;a.src=x.data;a.style.width="100%";
+  w.appendChild(h);w.appendChild(a);b.appendChild(w)})}
+
+var LB=["মন খারাপ হলে","ঘুম না এলে","আমাকে মিস করলে","রাগ করলে","খুব খুশি হলে"],wl=0;
+var m3=document.createElement("div");m3.className="panel";m3.id="m3";
+m3.innerHTML='<div class="card"><div class="hint" style="margin-bottom:6px">ওর জন্য চিঠি লিখে রাখো। ও যখন খুলবে তখনই পড়বে।</div><div class="chips" id="wol"></div><textarea id="wot" rows="3" placeholder="চিঠিটা লেখো"></textarea><button id="wos">সিল করে পাঠাও 💌</button></div><div class="serif" style="font-size:1.2rem;margin:14px 4px 8px">তোমার জন্য</div><div id="wr"></div><div class="serif" style="font-size:1.2rem;margin:14px 4px 8px">তুমি যা পাঠিয়েছো</div><div id="ws"></div>';
+$("mem").appendChild(m3);
+chips("wol",LB,function(i){wl=i},0);
+[].forEach.call($("mm").children,function(b){b.addEventListener("click",function(){$("m3").classList.remove("on")})});
+var wc=document.createElement("button");wc.className="chip";wc.textContent="📬 যখন খুলবে";
+wc.onclick=function(){[].forEach.call($("mm").children,function(x){x.classList.toggle("on",x===wc)});panels("m",3,-1);$("m3").classList.add("on")};$("mm").appendChild(wc);
+$("wos").onclick=function(){var t=$("wot").value.trim();if(!t||!DB)return;
+ DB.collection("wo").add({from:WHO,for:PW,label:LB[wl],text:t,t:Date.now(),opened:false}).then(function(){$("wot").value=""})};
+function rW(id,qs,rec){var b=$(id),a=[];b.innerHTML="";
+ qs.forEach(function(d){a.push({id:d.id,x:d.data()})});a.sort(function(p,q){return q.x.t-p.x.t});
+ if(!a.length){b.innerHTML='<p class="hint">কিছু নেই।</p>';return}
+ a.forEach(function(o){var d=document.createElement("div");d.className="card item";
+  var h=document.createElement("b");h.className="serif";h.textContent="💌 "+o.x.label;d.appendChild(h);
+  var s=document.createElement("span");
+  if(rec){if(o.x.opened){s.textContent=o.x.text;d.appendChild(s)}else{var k=document.createElement("button");k.textContent="খোলো";k.style.marginTop="8px";k.onclick=function(){DB.collection("wo").doc(o.id).update({opened:true});burst()};d.appendChild(k)}}
+  else{s.className="hint";s.textContent=o.x.opened?"খোলা হয়েছে ✓":"এখনো বন্ধ";d.appendChild(s)}
+  b.appendChild(d)})}
+
+var _st2=start,s2=false;
+start=function(){
+ _st2();if(s2)return;s2=true;
+ DB.doc("meta/next").onSnapshot(function(s){var d=s.data();NEXT=d&&d.d||null});
+ DB.doc("answers/"+TODAY).onSnapshot(function(s){rA(s.data()||{})});
+ var ls=-1;
+ DB.doc("live/"+PW).onSnapshot(function(s){var d=s.data()||{};
+  if((d.hold||0)!==pH){pH=d.hold||0;pRecv=Date.now();hv()}
+  if(ls!==-1&&d.snap&&d.snap.t!==ls)notify(PN[PW]+" একটা স্ন্যাপ পাঠিয়েছে 📸");
+  ls=d.snap?d.snap.t:0});
+ var fv=true;
+ DB.collection("voices").orderBy("t","desc").limit(4).onSnapshot(function(qs){rV(qs);
+  if(!fv)qs.docChanges().forEach(function(c){if(c.type==="added"&&c.doc.data().from!==WHO)notify(PN[PW]+" একটা ভয়েস পাঠিয়েছে 🎙️")});fv=false});
+ DB.collection("wo").where("for","==",WHO).onSnapshot(function(qs){rW("wr",qs,true)});
+ DB.collection("wo").where("from","==",WHO).onSnapshot(function(qs){rW("ws",qs,false)});
+};
+</script>
+</body>
+</html>
