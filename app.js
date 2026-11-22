@@ -162,7 +162,7 @@ function fail(){$("lgn").textContent="সার্ভারের সাথে �
 var pm=document.createElement("p");pm.className="note";pm.id="pmood";$("note").parentNode.appendChild(pm);
 
 function boot(){
- firebase.initializeApp(CFG);AU=firebase.auth();DB=firebase.firestore();
+ firebase.initializeApp(CFG);AU=firebase.auth();DB=firebase.firestore();try{DB.enablePersistence({synchronizeTabs:true}).catch(function(){})}catch(e){}
  AU.onAuthStateChanged(function(u){
   if(!u){$("lg").style.display="flex";return}
   WHO=(u.email||"").toLowerCase()===EM_S?"sagor":"shima";PW=WHO==="sagor"?"shima":"sagor";
@@ -1059,11 +1059,11 @@ start=function(){
    var x=m.x,me=x.from===WHO,dk2=new Date(x.t).toDateString();
    if(dk2!==prevDay){prevDay=dk2;var dd=document.createElement("div");dd.className="chd";dd.textContent=new Date(x.t).toLocaleDateString("bn-BD",{day:"numeric",month:"long"});l.appendChild(dd)}
    var b=document.createElement("div");b.className="bb "+(me?"me":"pt");
-   var tx=document.createElement("span");tx.textContent=x.text;b.appendChild(tx);
+   var tx=document.createElement("span");tx.textContent=x.text;b.appendChild(tx);if(window.LVvm&&x.vm)window.LVvm(b,tx,x);
    var sm=document.createElement("small");
    sm.textContent=new Date(x.t).toLocaleTimeString("bn-BD",{hour:"numeric",minute:"2-digit"})+(me&&i===lastMine&&ptSeenT>=x.t?" · ✓✓ দেখেছে":"");
    if(me){var del=document.createElement("span");del.textContent="  🗑️";del.style.cursor="pointer";del.setAttribute("role","button");del.setAttribute("aria-label","মুছো");
-    del.onclick=function(){if(confirm("মেসেজটা মুছে ফেলবে?"))DB.collection("chat").doc(m.id).delete()};sm.appendChild(del)}
+    del.onclick=function(){if(confirm("মেসেজটা মুছে ফেলবে?")){DB.collection("chat").doc(m.id).delete();if(x.vm)DB.collection("vm").doc(x.vm).delete().catch(function(){})}};sm.appendChild(del)}
    b.appendChild(sm);l.appendChild(b)});
   if(near||fs)l.scrollTop=l.scrollHeight}
  function send(t){
