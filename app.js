@@ -1,4 +1,6 @@
-var FIRST=new Date(2022,6,24), LAST=new Date(2026,10,2);
+var FIRST=new Date(2022,5,24), LAST=new Date(2026,10,2);
+(function(){var d=load("dates",null);if(d&&d.first){var a=d.first.split("-");FIRST=new Date(+a[0],+a[1]-1,+a[2])}if(d&&d.last){var b=d.last.split("-");LAST=new Date(+b[0],+b[1]-1,+b[2])}})();
+var bootT=Date.now()-3000;
 var MSGS=["তুমি দূরে আছো, কিন্তু আমার প্রতিটা দিনের ভেতরেই আছো।","তোমার একটা হাসি আমার পুরো দিনটা সুন্দর করে দেয়।","দূরত্ব শুধু একটা সংখ্যা, আমার মন তো তোমার পাশেই থাকে।","আজ যত দূরেই থাকি, রাতে একই আকাশের নিচে আমরা দুজন।","তুমি আমার সবচেয়ে প্রিয় অভ্যাস।","তোমাকে ভালোবাসি, আজও, কালও, সবসময়।"];
 var TASKS=["আজ একটা হাসিমুখের সেলফি পাঠাও।","আমাকে ৩টা কারণ বলো, কেন আমাকে ভালোবাসো।","তোমার প্রিয় গানটা আমাকে পাঠাও।","একটা ভয়েস নোটে আমাকে শুভরাত্রি বলো।","পরের দেখায় আমরা কী করবো, একটা জিনিস বলো।","আমার সবচেয়ে ভালো লাগার একটা গুণ বলো।"];
 var CPS=["একটা লম্বা ফোনকল, রাত জেগে, শুধু আমরা দুজন","ভিডিও কলে ফরমায়েশি একটা ফ্লাইং কিস 😘","আমার জন্য একটা গান গেয়ে শোনানো","একদিন সব আবদার মেনে নেওয়া, কোনো তর্ক ছাড়া","ফিসফিস করে ভয়েস নোটে একটা সিক্রেট বলা","দেখা হলে ১০ মিনিটের একটানা জড়িয়ে ধরা 🤗"];
@@ -21,7 +23,7 @@ var now=new Date(), doy=Math.floor((now-new Date(now.getFullYear(),0,0))/864e5),
 
 $("hi").textContent=(h<5?"শুভ রাত্রি":h<12?"শুভ সকাল":h<17?"শুভ দুপুর":h<20?"শুভ সন্ধ্যা":"শুভ রাত্রি")+", আজকের দিনটা তোমাদের";
 $("msg").textContent="“"+MSGS[doy%MSGS.length]+"”";
-$("c1").textContent=bn(days(FIRST)); $("c2").textContent=bn(days(LAST));
+function rcnt(){$("c1").textContent=bn(Math.max(0,days(FIRST)));$("c2").textContent=bn(Math.max(0,days(LAST)))}rcnt();
 $("task").textContent=TASKS[doy%TASKS.length];
 
 var tabs=document.querySelectorAll("nav button");
@@ -53,27 +55,20 @@ $("bt").onclick=function(){draw("t")}; $("bd").onclick=function(){draw("d")};
 var flt="",img=null;
 chips("flt",FL.map(function(f){return f[0]}),function(i){flt=FL[i][1];if(img)img.style.filter=flt},0);
 $("ct").oninput=function(){var c=$("cap");c.textContent=this.value;c.style.display=this.value?"block":"none"};
-$("file").onchange=function(){var f=this.files[0];if(!f)return;
-  var fr=$("fr");if(img)img.remove();img=document.createElement("img");img.alt="তোমার ছবি";img.src=URL.createObjectURL(f);img.style.filter=flt;
-  fr.insertBefore(img,fr.firstChild);fr.querySelector("span").style.display="none"};
+function setImg(f){if(!f)return;var fr=$("fr");if(img)img.remove();img=document.createElement("img");img.alt="তোমার ছবি";img.src=URL.createObjectURL(f);img.style.filter=flt;
+  fr.insertBefore(img,fr.firstChild);fr.querySelector("span").style.display="none"}
+$("file").onchange=function(){setImg(this.files[0]);this.value=""};
+$("file2").onchange=function(){setImg(this.files[0]);this.value=""};
 $("clr").onclick=function(){if(img){img.remove();img=null}$("fr").querySelector("span").style.display="";$("ct").value="";$("cap").style.display="none";$("snote").textContent=""};
-$("send").onclick=function(){
-  if(!img){$("snote").textContent="আগে একটা ছবি তোলো বা বেছে নাও।";return}
-  var v=$("view"),n=5;$("vf").innerHTML="";var c=img.cloneNode();$("vf").appendChild(c);
-  if($("ct").value){var d=document.createElement("div");d.className="cap";d.style.display="block";d.textContent=$("ct").value;$("vf").appendChild(d)}
-  v.style.display="flex";$("vt").textContent=bn(n)+" সেকেন্ডে মিলিয়ে যাবে";
-  var t=setInterval(function(){n--;if(n<=0){clearInterval(t);v.style.display="none";$("snote").textContent="স্ন্যাপ মিলিয়ে গেছে ✨ (এখন শুধু ডেমো, পরে শিমার ফোনে যাবে)"}else $("vt").textContent=bn(n)+" সেকেন্ডে মিলিয়ে যাবে"},1000);
-};
-
 var dl=load("doneDays",[]);
 function streak(){var d=new Date(),n=0;if(dl.indexOf(key(d))<0)d.setDate(d.getDate()-1);while(dl.indexOf(key(d))>=0){n++;d.setDate(d.getDate()-1)}return n}
 function rd(){var ok=dl.indexOf(key(new Date()))>=0,s=streak();$("done").disabled=ok;$("done").textContent=ok?"আজকের টাস্ক শেষ ✓":"করে ফেলেছি 💗";$("streak").textContent=s?"Love Streak 🔥 "+bn(s)+" দিন":""}
-$("done").onclick=function(){var k=key(new Date());if(dl.indexOf(k)<0){dl.push(k);save("doneDays",dl)}rd();burst()};rd();
+$("done").onclick=function(){var k=key(new Date());if(dl.indexOf(k)<0){dl.push(k);save("doneDays",dl);logEv("আজকের টাস্ক শেষ করেছে 💗","love")}rd();burst()};rd();
 
 var used=load("cpUsed",[]);
 function rc(){$("cps").innerHTML="";CPS.forEach(function(t,i){var u=used.indexOf(i)>=0,d=document.createElement("div");d.className="card ticket"+(u?" used":"");
   d.innerHTML="<p></p>";d.firstChild.textContent=t;var b=document.createElement("button");b.textContent=u?"ব্যবহৃত":"ব্যবহার করো";b.disabled=u;
-  b.onclick=function(){used.push(i);save("cpUsed",used);rc();burst()};d.appendChild(b);$("cps").appendChild(d)})}
+  b.onclick=function(){used.push(i);save("cpUsed",used);logEv("একটা লাভ কুপন ব্যবহার করেছে 🎟️","love");rc();burst()};d.appendChild(b);$("cps").appendChild(d)})}
 rc();
 function pad(n){return n<10?"0"+n:""+n}
 var TODAY=now.getFullYear()+"-"+pad(now.getMonth()+1)+"-"+pad(now.getDate());
@@ -125,14 +120,34 @@ var W=[["ভিডিও কলে সারারাত গল্প","এক�
 function nextW(){var n;do{n=Math.floor(Math.random()*W.length)}while(n===wi);wi=n;$("wa").textContent=W[n][0];$("wb").textContent=W[n][1]}
 $("wa").onclick=$("wb").onclick=function(){$("wnote").textContent="ভালো পছন্দ 💗 শিমাকে জিজ্ঞেস করো, ও কোনটা বেছে নিত!";setTimeout(nextW,800)};nextW();
 
-var TL2=load("tl",[{d:"2022-07-24",t:"প্রথম দেখা, রাবি পরীক্ষা দিতে এসে 💞"},{d:"2026-11-02",t:"শেষ দেখা 🥹"}]);
-function rt(){TL2.sort(function(a,b){return a.d<b.d?-1:1});$("tl").innerHTML="";TL2.forEach(function(x){var d=document.createElement("div");d.className="card item";d.innerHTML="<b class='serif' style='color:var(--rose)'></b><span></span>";d.firstChild.textContent=fd(x.d);d.lastChild.textContent=x.t;$("tl").appendChild(d)})}
+function fixTL(a){var ch=false;a.forEach(function(x){if(x.d==="2022-07-24"&&/প্রথম দেখা/.test(x.t)){x.d="2022-06-24";ch=true}});return ch}
+var TL2=load("tl",[{d:"2022-06-24",t:"প্রথম দেখা, রাবি পরীক্ষা দিতে এসে 💞"},{d:"2026-11-02",t:"শেষ দেখা 🥹"}]);
+if(fixTL(TL2))save("tl",TL2);
+function editTL(x,d){d.innerHTML="";var di=document.createElement("input");di.type="date";di.value=x.d;var ti=document.createElement("input");ti.type="text";ti.value=x.t;ti.maxLength=200;
+ var sv=document.createElement("button");sv.textContent="সেভ করো";var cn=document.createElement("button");cn.className="ghost";cn.textContent="বাতিল";cn.style.marginTop="8px";
+ sv.onclick=function(){if(!di.value||!ti.value.trim())return;x.d=di.value;x.t=ti.value.trim();save("tl",TL2);rt()};cn.onclick=rt;
+ [di,ti,sv,cn].forEach(function(e){d.appendChild(e)})}
+function rt(){TL2.sort(function(a,b){return a.d<b.d?-1:1});var box=$("tl");box.innerHTML="";
+ TL2.forEach(function(x){
+  var d=document.createElement("div");d.className="card item";
+  var h=document.createElement("b");h.className="serif";h.style.color="var(--rose)";h.textContent=fd(x.d);
+  var sp=document.createElement("span");sp.textContent=x.t;
+  var ac=document.createElement("div");ac.className="chips";ac.style.cssText="justify-content:flex-start;margin:6px 0 0";
+  var ed=document.createElement("button");ed.className="chip";ed.textContent="✏️ এডিট";ed.onclick=function(){editTL(x,d)};
+  var dd=document.createElement("button");dd.className="chip";dd.textContent="🗑️ মুছো";dd.onclick=function(){if(confirm("এই স্মৃতিটা মুছে ফেলবে?")){TL2.splice(TL2.indexOf(x),1);save("tl",TL2);rt()}};
+  ac.appendChild(ed);ac.appendChild(dd);d.appendChild(h);d.appendChild(sp);d.appendChild(ac);box.appendChild(d)})}
 $("tla").onclick=function(){var t=$("tlt").value.trim(),d=$("tld").value;if(!t||!d)return;TL2.push({d:d,t:t});save("tl",TL2);$("tlt").value="";rt()};rt();
 var NT=load("nt",[]);
 function rn(){$("nl").innerHTML="";NT.forEach(function(x){var d=document.createElement("div");d.className="card item";d.textContent=x.d>TODAY?"🔒 "+fd(x.d)+" তারিখে খুলবে":"💌 "+x.t;$("nl").appendChild(d)})}
 $("na").onclick=function(){var t=$("nt").value.trim(),d=$("nd").value;if(!t||!d)return;NT.push({t:t,d:d});save("nt",NT);$("nt").value="";rn()};rn();
 var BL=load("bl",[{t:"একসাথে সমুদ্র দেখা 🌊"},{t:"তারা ভরা আকাশের নিচে বসা ✨"},{t:"একই কফি দুজনে ভাগ করে খাওয়া ☕"}]);
-function rb(){$("bl").innerHTML="";BL.forEach(function(x){var d=document.createElement("button");d.className="chip";d.style.cssText="display:block;width:100%;text-align:left;margin-bottom:8px;border-radius:16px";d.textContent=(x.x?"✅ ":"⬜ ")+x.t;if(x.x)d.style.opacity=.6;d.onclick=function(){x.x=!x.x;save("bl",BL);rb();if(x.x)burst()};$("bl").appendChild(d)})}
+function rb(){var box=$("bl");box.innerHTML="";BL.forEach(function(x){
+ var row=document.createElement("div");row.style.cssText="display:flex;gap:6px;margin-bottom:8px;align-items:stretch";
+ var c=document.createElement("button");c.className="chip";c.style.cssText="flex:1;text-align:left;border-radius:16px";c.textContent=(x.x?"✅ ":"⬜ ")+x.t;if(x.x)c.style.opacity=.6;
+ c.onclick=function(){x.x=!x.x;save("bl",BL);rb();if(x.x)burst()};
+ var e=document.createElement("button");e.className="chip";e.textContent="✏️";e.setAttribute("aria-label","এডিট");e.onclick=function(){var v=prompt("বদলাও",x.t);if(v&&v.trim()){x.t=v.trim();save("bl",BL);rb()}};
+ var d=document.createElement("button");d.className="chip";d.textContent="🗑️";d.setAttribute("aria-label","মুছো");d.onclick=function(){if(confirm("মুছে ফেলবে?")){BL.splice(BL.indexOf(x),1);save("bl",BL);rb()}};
+ row.appendChild(c);row.appendChild(e);row.appendChild(d);box.appendChild(row)})}
 $("ba").onclick=function(){var t=$("bt2").value.trim();if(!t)return;BL.push({t:t});save("bl",BL);$("bt2").value="";rb()};rb();
 
 /* ===== Firebase: লগইন ও রিয়েল-টাইম ===== */
@@ -145,7 +160,6 @@ ldOne("app",function(e){if(e)return fail();ldOne("auth",function(e){if(e)return 
 function fail(){$("lgn").textContent="সার্ভারের সাথে যুক্ত হওয়া যায়নি। ইন্টারনেট দেখে পেজ রিলোড করো।"}
 
 var pm=document.createElement("p");pm.className="note";pm.id="pmood";$("note").parentNode.appendChild(pm);
-var ib=document.createElement("button");ib.id="inbox";ib.className="ghost";ib.style.cssText="display:none;margin-bottom:12px";ib.textContent="📩 নতুন স্ন্যাপ এসেছে, দেখো";$("snap").insertBefore(ib,$("fr"));
 
 function boot(){
  firebase.initializeApp(CFG);AU=firebase.auth();DB=firebase.firestore();
@@ -173,36 +187,14 @@ function start(){
   if(d.mood!=null)$("pmood").textContent=PN[PW]+" এখন: "+MOODS[d.mood];
   if(d.ping){if(!first&&d.ping>lastPing){burst();$("note").textContent=PN[PW]+" তোমাকে ভাবছে 💞"}lastPing=d.ping}
   first=false;
-  snapIn=d.snap||null;$("inbox").style.display=snapIn?"block":"none";
  },function(e){$("note").textContent="কানেকশনে সমস্যা: "+e.code+" (Rules ও ডাটাবেস দেখো)"});
  [].forEach.call($("moods").children,function(b,i){b.addEventListener("click",function(){
-  DB.doc("live/"+WHO).set({mood:i},{merge:true}).then(function(){$("note").textContent="তোমার মুড "+PN[PW]+" দেখতে পাবে 💗"}).catch(function(e){$("note").textContent="সমস্যা: "+e.code})})});
+  DB.doc("live/"+WHO).set({mood:i},{merge:true}).then(function(){$("note").textContent="তোমার মুড "+PN[PW]+" দেখতে পাবে 💗";logEv("মুড বদলেছে: "+MOODS[i],"home")}).catch(function(e){$("note").textContent="সমস্যা: "+e.code})})});
 }
 $("think").onclick=function(){
  burst();if(!DB)return;
  DB.doc("live/"+WHO).set({ping:Date.now()},{merge:true}).then(function(){$("note").textContent=PN[PW]+"কে জানানো হয়েছে 💗"}).catch(function(e){$("note").textContent="সমস্যা: "+e.code});
 };
-$("send").onclick=function(){
- if(!img){$("snote").textContent="আগে একটা ছবি তোলো বা বেছে নাও।";return}
- if(!DB)return;
- var w=img.naturalWidth,h=img.naturalHeight,k=Math.min(1,640/Math.max(w,h)),c=document.createElement("canvas");
- c.width=Math.round(w*k);c.height=Math.round(h*k);var x=c.getContext("2d");var cf=("filter" in CanvasRenderingContext2D.prototype);if(cf)x.filter=flt||"none";x.drawImage(img,0,0,c.width,c.height);
- $("snote").textContent="পাঠানো হচ্ছে...";
- DB.doc("live/"+WHO).set({snap:{img:c.toDataURL("image/jpeg",.6),cap:$("ct").value,f:cf?"":(flt||""),t:Date.now()}},{merge:true})
-  .then(function(){$("snote").textContent="স্ন্যাপ "+PN[PW]+"র কাছে পৌঁছে গেছে ✨";$("clr").onclick()})
-  .catch(function(e){$("snote").textContent="সমস্যা: "+e.code});
-};
-$("inbox").onclick=function(){
- if(!snapIn)return;
- var s=snapIn,n=5,v=$("view");$("vf").innerHTML="";
- var im=document.createElement("img");im.src=s.img;if(s.f)im.style.filter=s.f;$("vf").appendChild(im);
- if(s.cap){var d=document.createElement("div");d.className="cap";d.style.display="block";d.textContent=s.cap;$("vf").appendChild(d)}
- v.style.display="flex";$("vt").textContent=bn(n)+" সেকেন্ডে মিলিয়ে যাবে";
- var t=setInterval(function(){n--;
-  if(n<=0){clearInterval(t);v.style.display="none";$("vf").innerHTML="";DB.doc("live/"+PW).update({snap:firebase.firestore.FieldValue.delete()})}
-  else $("vt").textContent=bn(n)+" সেকেন্ডে মিলিয়ে যাবে"},1000);
-};
-
 /* ===== বের হও ও পাসওয়ার্ড রিসেট ===== */
 var lo=document.createElement("button");lo.className="ghost";lo.id="lgo";lo.textContent="বের হও";lo.style.marginTop="14px";$("home").appendChild(lo);
 lo.onclick=function(){if(!AU)return;AU.signOut().then(function(){location.reload()})};
@@ -236,18 +228,25 @@ function renderNotes(qs){
  qs.forEach(function(doc){
   var n=doc.data(),id=doc.id,r=n.r||{},d=document.createElement("div");
   d.style.cssText="border-bottom:1px solid var(--line);padding:10px 0";
-  var h=document.createElement("div");h.className="hint";h.textContent=who(n.from)+", "+ft(n.t);
+  var h=document.createElement("div");h.className="hint";h.textContent=who(n.from)+", "+ft(n.t)+(n.edited?" · এডিট করা":"");
   var p=document.createElement("p");p.className="serif";p.style.cssText="margin:4px 0;font-size:1.15rem";p.textContent=n.text;
   var rx=document.createElement("div");rx.className="chips";rx.style.justifyContent="flex-start";
   RX.forEach(function(e){var b=document.createElement("button");b.className="chip"+(r[WHO]===e?" on":"");b.textContent=e;b.style.padding="3px 10px";
-   b.onclick=function(){var v={};v["r."+WHO]=r[WHO]===e?firebase.firestore.FieldValue.delete():e;DB.collection("notes").doc(id).update(v)};rx.appendChild(b)});
+   b.onclick=function(){var v={};v["r."+WHO]=r[WHO]===e?firebase.firestore.FieldValue.delete():e;DB.collection("notes").doc(id).update(v).then(function(){if(r[WHO]!==e)logEv("তোমার নোটে "+e+" দিয়েছে","home")})};rx.appendChild(b)});
   if(r[PW]){var s=document.createElement("span");s.className="hint";s.textContent=PN[PW]+": "+r[PW];rx.appendChild(s)}
   d.appendChild(h);d.appendChild(p);d.appendChild(rx);
   (n.replies||[]).forEach(function(q){var x=document.createElement("div");x.style.cssText="margin:4px 0 0 14px;padding-left:10px;border-left:3px solid var(--rose2)";x.textContent=who(q.from)+": "+q.text;d.appendChild(x)});
   var ri=document.createElement("input");ri.type="text";ri.className="rin";ri.dataset.id=id;ri.placeholder="রিপ্লে দাও";ri.maxLength=200;ri.value=dr2[id]||"";
   var rb=document.createElement("button");rb.className="ghost";rb.textContent="রিপ্লে";rb.style.padding="8px";
-  rb.onclick=function(){var t=ri.value.trim();if(!t)return;dr2[id]="";DB.collection("notes").doc(id).update({replies:firebase.firestore.FieldValue.arrayUnion({from:WHO,text:t,t:Date.now()})})};
-  d.appendChild(ri);d.appendChild(rb);box.appendChild(d);
+  rb.onclick=function(){var t=ri.value.trim();if(!t)return;dr2[id]="";DB.collection("notes").doc(id).update({replies:firebase.firestore.FieldValue.arrayUnion({from:WHO,text:t,t:Date.now()})}).then(function(){logEv("নোটে রিপ্লে দিয়েছে 💬","home")})};
+  d.appendChild(ri);d.appendChild(rb);
+  if(n.from===WHO){var ac=document.createElement("div");ac.className="chips";ac.style.justifyContent="flex-end";
+   var ed=document.createElement("button");ed.className="chip";ed.textContent="✏️ এডিট";ed.style.padding="3px 10px";
+   ed.onclick=function(){var v=prompt("নোটটা বদলাও",n.text);if(v&&v.trim()&&v.trim()!==n.text)DB.collection("notes").doc(id).update({text:v.trim().slice(0,300),edited:true})};
+   var dn=document.createElement("button");dn.className="chip";dn.textContent="🗑️ মুছো";dn.style.padding="3px 10px";
+   dn.onclick=function(){if(confirm("নোটটা মুছে ফেলবে?"))DB.collection("notes").doc(id).delete()};
+   ac.appendChild(ed);ac.appendChild(dn);d.appendChild(ac)}
+  box.appendChild(d);
  });
 }
 function renderDares(qs){
@@ -259,7 +258,7 @@ function renderDares(qs){
   var d=document.createElement("div");d.className="card";d.style.cssText="margin:0 0 10px;border:1.5px dashed var(--rose2)";
   var b=document.createElement("span");b.className="badge";b.textContent=(o.x.kind==="t"?"সত্যি বলো":"সাহস দেখাও")+", "+PN[o.x.from]+"র কার্ড";
   var p=document.createElement("p");p.className="serif";p.style.margin="8px 0";p.textContent=o.x.text;
-  var k=document.createElement("button");k.textContent="করে ফেলেছি ✓";k.onclick=function(){DB.collection("dares").doc(o.id).update({done:true});burst()};
+  var k=document.createElement("button");k.textContent="করে ফেলেছি ✓";k.onclick=function(){DB.collection("dares").doc(o.id).update({done:true});logEv("একটা কার্ডের কাজ করে ফেলেছে ✓","td");burst()};
   d.appendChild(b);d.appendChild(p);d.appendChild(k);box.appendChild(d);
  });
 }
@@ -293,7 +292,7 @@ start=function(){
 function mk2(h){var d=document.createElement("div");d.className="card";d.innerHTML=h;$("home").insertBefore(d,$("lgo"));return d}
 var T='<div class="serif" style="font-size:1.2rem;margin-bottom:6px">';
 mk2('<div class="hint">পরের দেখা হতে বাকি</div><div class="serif" id="cdv" style="font-size:2rem;color:var(--rose);margin:4px 0">—</div><input type="date" id="cdi" aria-label="পরের দেখার তারিখ"><button class="ghost" id="cdb">তারিখ ঠিক করো</button>');
-mk2(T+'🤝 হাত ধরো</div><p class="hint" id="hn" style="margin:0 0 12px">দুজনে একসাথে ধরলে জ্বলে উঠবে</p><div id="hp">🤍</div>');
+mk2(T+'🤝 হাত ধরো</div><p class="hint" id="hn" style="margin:0 0 12px">আঙুল দিয়ে ধরে থাকো, ও টের পাবে</p><div id="hp"><span id="hpi">🤍</span><i id="hpm"></i><i id="hpf"></i></div>');
 mk2(T+'❓ আজকের প্রশ্ন</div><p class="serif" id="dq" style="font-size:1.15rem;margin:6px 0"></p><div id="da"></div>');
 mk2(T+'🎙️ ভয়েস নোট</div><button id="vrec">🎙️ রেকর্ড শুরু করো</button><p class="note" id="vn"></p><div id="vl"></div>');
 mk2(T+'🔔 নোটিফিকেশন</div><p class="hint" style="margin:0 0 10px">অ্যাপ খোলা বা ব্যাকগ্রাউন্ডে থাকলে ফোনে জানাবে।</p><button class="ghost" id="nfb">চালু করো</button>');
@@ -301,12 +300,23 @@ mk2(T+'🔔 নোটিফিকেশন</div><p class="hint" style="margin:0 
 var ICON=['<path d="M3 11l9-8 9 8M5 10v10h14V10"/>','<rect x="5" y="3" width="12" height="17" rx="2"/><path d="M9 21h9a2 2 0 002-2V8"/>','<rect x="3" y="8" width="18" height="10" rx="5"/><path d="M8 11v4M6 13h4M16 12h.01M18 14h.01"/>','<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>','<path d="M12 20s-7-4.4-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.6-7 10-7 10z"/>','<path d="M3 8a2 2 0 002-2h14a2 2 0 002 2v3a2 2 0 000 4v3a2 2 0 00-2 2H5a2 2 0 00-2-2v-3a2 2 0 000-4z"/>'];
 document.querySelectorAll("nav button").forEach(function(b,i){var s=b.querySelector("span");if(s){var v=document.createElement("span");v.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+ICON[i]+'</svg>';b.replaceChild(v,s)}});
 
-function notify(t){
- try{if(navigator.vibrate)navigator.vibrate([120,60,120])}catch(e){}
+function notify(t,tag){
+ try{if(navigator.vibrate&&!document.hidden)navigator.vibrate([120,60,120])}catch(e){}
+ if(localStorage.getItem("ntfyOn")==="1")return;
  if(!("Notification" in window)||Notification.permission!=="granted"||!document.hidden||!navigator.serviceWorker)return;
- navigator.serviceWorker.getRegistration().then(function(r){if(r)r.showNotification("আমাদের পৃথিবী",{body:t})});
+ navigator.serviceWorker.getRegistration().then(function(r){if(r)r.showNotification("আমাদের পৃথিবী",{body:t,tag:tag||("ap-"+Date.now())})});
 }
-var _b=burst;burst=function(){_b();setTimeout(function(){notify($("note").textContent)},60)};
+function logEv(text,tab,sub){if(!DB||!WHO)return;DB.collection("events").add({from:WHO,text:text,tab:tab||"home",sub:sub||"",t:Date.now()}).catch(function(){})}
+var pushTopic=null,pushT=0;
+function pushPartner(){
+ if(!pushTopic||!WHO)return;var n=Date.now();if(n-pushT<10000)return;pushT=n;
+ try{fetch("https://ntfy.sh",{method:"POST",body:JSON.stringify({topic:pushTopic,title:"আমাদের পৃথিবী 💗",message:PN[WHO]+" কিছু করেছে",tags:["heart"],click:location.href.split("#")[0]})}).catch(function(){})}catch(e){}
+}
+var toastT=null,toastEl=null;
+function toast(t,fn){
+ if(!toastEl){toastEl=document.createElement("div");toastEl.id="toast";document.body.appendChild(toastEl)}
+ toastEl.textContent=t;toastEl.style.display="block";toastEl.onclick=function(){toastEl.style.display="none";if(fn)fn()};
+ clearTimeout(toastT);toastT=setTimeout(function(){toastEl.style.display="none"},5000)}
 $("nfb").onclick=function(){
  if(!("Notification" in window)){$("nfb").textContent="এই ব্রাউজারে চলবে না";return}
  Notification.requestPermission().then(function(p){if(p==="granted"){if(navigator.serviceWorker)navigator.serviceWorker.register("sw.js").catch(function(){});$("nfb").textContent="চালু আছে ✓"}else $("nfb").textContent="অনুমতি দেওয়া হয়নি"});
@@ -319,7 +329,7 @@ setInterval(function(){var e=$("cdv");if(!NEXT){e.textContent="তারিখ �
  if(ms<-864e5){e.textContent="নতুন তারিখ ঠিক করো";return}
  if(ms<=0){e.textContent="আজ দেখা! 🥰";return}
  e.textContent=bn(Math.floor(ms/864e5))+" দিন "+bn(Math.floor(ms%864e5/36e5))+" ঘণ্টা"},1000);
-$("cdb").onclick=function(){var d=$("cdi").value;if(d&&DB)DB.doc("meta/next").set({d:d})};
+$("cdb").onclick=function(){var d=$("cdi").value;if(d&&DB)DB.doc("meta/next").set({d:d}).then(function(){logEv("পরের দেখার তারিখ ঠিক করেছে 📅","home")})};
 
 var QS=["এই সপ্তাহে কোন মুহূর্তে আমাকে সবচেয়ে বেশি মিস করেছো?","আমাদের একসাথে কাটানো সবচেয়ে প্রিয় দিনটা কোনটা?","আমার কোন অভ্যাসটা তোমার সবচেয়ে ভালো লাগে?","পরের দেখায় প্রথম কী করতে চাও?","আজ তোমার দিনের সবচেয়ে ভালো জিনিস কী ছিল?","আমাদের নিয়ে তোমার একটা স্বপ্নের কথা বলো।","আমার কোন কথাটা তোমার মনে গেঁথে আছে?","এখন আমাকে কাছে পেলে কী করতে?"];
 $("dq").textContent=QS[doy%QS.length];
@@ -329,20 +339,36 @@ function rA(d){var b=$("da"),m=d[WHO],p=d[PW];b.innerHTML="";
  if(p)ln(PN[PW]+" উত্তর দিয়ে ফেলেছে, তুমি দিলে দেখতে পাবে।");
  var i=document.createElement("input");i.type="text";i.placeholder="তোমার উত্তর";i.maxLength=300;
  var k=document.createElement("button");k.textContent="উত্তর দাও";
- k.onclick=function(){var t=i.value.trim();if(!t)return;var o={};o[WHO]=t;DB.doc("answers/"+TODAY).set(o,{merge:true})};
+ k.onclick=function(){var t=i.value.trim();if(!t)return;var o={};o[WHO]=t;DB.doc("answers/"+TODAY).set(o,{merge:true}).then(function(){logEv("আজকের প্রশ্নের উত্তর দিয়েছে ❓","home")})};
  b.appendChild(i);b.appendChild(k);
 }
 
-var myH=false,hT=null,pH=0,pRecv=0,bothH=false;
-function setHold(v){DB.doc("live/"+WHO).set({hold:v},{merge:true})}
+var myH=false,hT=null,pH=0,pRecv=0,bothH=false,px=.5,py=.5,myX=.5,myY=.5,mvT=0,lastHoldEv=0,lastVib=0,tbn=null;
+function tref(w){return DB.doc("meta/touch_"+w)}
+function tpos(e){var r=$("hp").getBoundingClientRect();return[Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)),Math.min(1,Math.max(0,(e.clientY-r.top)/r.height))]}
+function setHold(v){if(DB&&WHO)tref(WHO).set({h:v,x:myX,y:myY}).catch(function(){})}
 function pHold(){return pH>0&&Date.now()-pRecv<3500}
-function hv(){var b=myH&&pHold(),e=$("hp");e.className=b?"both":myH?"me":"";
- e.textContent=b?"💗":myH?"🤍":"🤍";
- $("hn").textContent=b?"দুজনে হাত ধরে আছো 💗":myH?PN[PW]+"র অপেক্ষায়...":pHold()?PN[PW]+" হাত ধরে আছে, তুমিও ধরো!":"দুজনে একসাথে ধরলে জ্বলে উঠবে";
- if(b&&!bothH&&navigator.vibrate)navigator.vibrate([200,100,200]);bothH=b}
-function stopH(){if(!myH)return;myH=false;clearInterval(hT);setHold(0);hv()}
-$("hp").onpointerdown=function(e){e.preventDefault();if(!DB||myH)return;myH=true;setHold(Date.now());hT=setInterval(function(){setHold(Date.now())},1000);hv()};
-["pointerup","pointercancel","pointerleave"].forEach(function(ev){$("hp").addEventListener(ev,stopH)});
+function mineF(){var m=$("hpm");m.style.left=myX*100+"%";m.style.top=myY*100+"%";m.style.opacity=myH?1:0}
+function tban(){
+ var on=pHold()&&!myH;
+ if(!tbn){tbn=document.createElement("button");tbn.id="tbn";tbn.onclick=function(){var x=document.querySelector('nav button[data-t="home"]');if(x)x.click();window.scrollTo(0,0)};document.body.appendChild(tbn)}
+ tbn.style.display=on?"block":"none";
+ if(on){tbn.textContent="🤍 "+PN[PW]+" তোমাকে ছুঁয়ে আছে, ছোঁও!";if(navigator.vibrate&&!document.hidden&&Date.now()-lastVib>2000){lastVib=Date.now();try{navigator.vibrate([90,70,90])}catch(e){}}}}
+function hv(){
+ var b=myH&&pHold(),e=$("hp"),f=$("hpf");
+ e.className=b?"both":myH?"me":pHold()?"pt":"";
+ $("hpi").textContent=b?"💗":"🤍";
+ f.style.left=px*100+"%";f.style.top=py*100+"%";f.style.opacity=pHold()?1:0;
+ $("hn").textContent=b?"দুজনে হাত ধরে আছো 💗":myH?PN[PW]+"র অপেক্ষায়...":pHold()?PN[PW]+" আঙুল দিয়ে আছে, তুমিও ছোঁও!":"আঙুল দিয়ে ধরে থাকো, ও টের পাবে";
+ if(b&&!bothH&&navigator.vibrate)try{navigator.vibrate([200,100,200])}catch(x){}
+ bothH=b;tban()}
+function stopH(){if(!myH)return;myH=false;clearInterval(hT);setHold(0);mineF();hv()}
+$("hp").onpointerdown=function(e){e.preventDefault();if(!DB||myH)return;var p=tpos(e);myX=p[0];myY=p[1];myH=true;setHold(Date.now());hT=setInterval(function(){setHold(Date.now())},1000);
+ if(Date.now()-lastHoldEv>60000){lastHoldEv=Date.now();logEv("তোমাকে আঙুলে ছুঁয়ে আছে 🤝, তুমিও ছোঁও!","home")}
+ try{$("hp").setPointerCapture(e.pointerId)}catch(x){}
+ mineF();hv()};
+$("hp").onpointermove=function(e){if(!myH)return;var p=tpos(e);myX=p[0];myY=p[1];mineF();var n=Date.now();if(n-mvT>300){mvT=n;setHold(n)}};
+["pointerup","pointercancel","lostpointercapture"].forEach(function(ev){$("hp").addEventListener(ev,stopH)});
 $("hp").addEventListener("contextmenu",function(e){e.preventDefault()});
 setInterval(hv,700);
 
@@ -364,7 +390,10 @@ $("vrec").onclick=function(){
 function rV(qs){var b=$("vl");b.innerHTML="";
  qs.forEach(function(d){var x=d.data(),w=document.createElement("div"),h=document.createElement("div"),a=document.createElement("audio");
   w.style.marginTop="10px";h.className="hint";h.textContent=who(x.from)+", "+ft(x.t);a.controls=true;a.src=x.data;a.style.width="100%";
-  w.appendChild(h);w.appendChild(a);b.appendChild(w)})}
+  w.appendChild(h);w.appendChild(a);
+  if(x.from===WHO){var k=document.createElement("button");k.className="ghost";k.textContent="🗑️ মুছো";k.style.cssText="padding:6px;margin-top:6px";k.onclick=function(){if(confirm("ভয়েসটা মুছে ফেলবে?"))DB.collection("voices").doc(d.id).delete()};w.appendChild(k)}
+  b.appendChild(w)});
+ if(qs.empty)b.innerHTML='<p class="hint">এখনো কোনো ভয়েস নেই।</p>'}
 
 var LB=["মন খারাপ হলে","ঘুম না এলে","আমাকে মিস করলে","রাগ করলে","খুব খুশি হলে"],wl=0;
 var m3=document.createElement("div");m3.className="panel";m3.id="m3";
@@ -382,8 +411,9 @@ function rW(id,qs,rec){var b=$(id),a=[];b.innerHTML="";
  a.forEach(function(o){var d=document.createElement("div");d.className="card item";
   var h=document.createElement("b");h.className="serif";h.textContent="💌 "+o.x.label;d.appendChild(h);
   var s=document.createElement("span");
-  if(rec){if(o.x.opened){s.textContent=o.x.text;d.appendChild(s)}else{var k=document.createElement("button");k.textContent="খোলো";k.style.marginTop="8px";k.onclick=function(){DB.collection("wo").doc(o.id).update({opened:true});burst()};d.appendChild(k)}}
+  if(rec){if(o.x.opened){s.textContent=o.x.text;d.appendChild(s)}else{var k=document.createElement("button");k.textContent="খোলো";k.style.marginTop="8px";k.onclick=function(){DB.collection("wo").doc(o.id).update({opened:true});logEv("যখন খুলবে চিঠি খুলেছে 📬","mem");burst()};d.appendChild(k)}}
   else{s.className="hint";s.textContent=o.x.opened?"খোলা হয়েছে ✓":"এখনো বন্ধ";d.appendChild(s)}
+  if(!rec||o.x.opened){var dw=document.createElement("button");dw.className="ghost";dw.textContent="🗑️ মুছো";dw.style.cssText="padding:6px;margin-top:8px";dw.onclick=function(){if(confirm("চিঠিটা মুছে ফেলবে? দুজনের কাছ থেকেই মুছে যাবে।"))DB.collection("wo").doc(o.id).delete()};d.appendChild(dw)}
   b.appendChild(d)})}
 
 var _st2=start,s2=false;
@@ -391,14 +421,11 @@ start=function(){
  _st2();if(s2)return;s2=true;
  DB.doc("meta/next").onSnapshot(function(s){var d=s.data();NEXT=d&&d.d||null});
  DB.doc("answers/"+TODAY).onSnapshot(function(s){rA(s.data()||{})});
- var ls=-1;
- DB.doc("live/"+PW).onSnapshot(function(s){var d=s.data()||{};
-  if((d.hold||0)!==pH){pH=d.hold||0;pRecv=Date.now();hv()}
-  if(ls!==-1&&d.snap&&d.snap.t!==ls)notify(PN[PW]+" একটা স্ন্যাপ পাঠিয়েছে 📸");
-  ls=d.snap?d.snap.t:0});
- var fv=true;
- DB.collection("voices").orderBy("t","desc").limit(4).onSnapshot(function(qs){rV(qs);
-  if(!fv)qs.docChanges().forEach(function(c){if(c.type==="added"&&c.doc.data().from!==WHO)notify(PN[PW]+" একটা ভয়েস পাঠিয়েছে 🎙️")});fv=false});
+ DB.doc("meta/touch_"+PW).onSnapshot(function(s){var d=s.data()||{};
+  if(d.x!=null){px=d.x;py=d.y}
+  if((d.h||0)!==pH){pH=d.h||0;pRecv=Date.now()}
+  hv()});
+ DB.collection("voices").orderBy("t","desc").limit(6).onSnapshot(function(qs){rV(qs)});
  DB.collection("wo").where("for","==",WHO).onSnapshot(function(qs){rW("wr",qs,true)});
  DB.collection("wo").where("from","==",WHO).onSnapshot(function(qs){rW("ws",qs,false)});
 };
@@ -453,7 +480,7 @@ start=function(){
    var m=Math.min(im.width,im.height),sx=(im.width-m)/2,sy=(im.height-m)/2;
    x.drawImage(im,sx,sy,m,m,0,0,z,z);
    var url=c.toDataURL("image/jpeg",.75);URL.revokeObjectURL(im.src);
-   DB.doc("live/"+WHO).set({avatar:url},{merge:true}).catch(function(e){$("note").textContent="ছবিতে সমস্যা: "+e.code});
+   DB.doc("live/"+WHO).set({avatar:url},{merge:true}).then(function(){logEv("প্রোফাইল ছবি বদলেছে 📷","home")}).catch(function(e){$("note").textContent="ছবিতে সমস্যা: "+e.code});
   };
   im.src=URL.createObjectURL(f);fi.value="";
  };
@@ -488,7 +515,6 @@ start=function(){
  bell.onclick=openAct;$("evx").onclick=closeAct;
  act.addEventListener("click",function(e){if(e.target===act)closeAct()});
 
- function logEv(text,tab,sub){if(!DB||!WHO)return;DB.collection("events").add({from:WHO,text:text,tab:tab,sub:sub||"",t:Date.now()}).catch(function(){})}
 
  /* বিদ্যমান কাজগুলো থেকে নিজে নিজে ঘটনা লেখা */
  var MAP={notes:["একটা নোট রেখেছে 💌","home"],dares:["তোমার জন্য নতুন কার্ড বানিয়েছে 🎁","td"],voices:["ভয়েস পাঠিয়েছে 🎙️","home"],wo:["যখন খুলবে চিঠি রেখেছে 📬","mem"],letters:["তোমাকে একটা চিঠি লিখেছে ✉️","mem","letters"]};
@@ -496,9 +522,9 @@ start=function(){
   var c=DB.collection.bind(DB);
   DB.collection=function(n){var r=c(n);
    if(MAP[n]){var a=r.add.bind(r);r.add=function(o){var m=MAP[n];logEv(m[0],m[1],m[2]);return a(o)}}
+   if(n==="events"){var a2=r.add.bind(r);r.add=function(o){pushPartner();return a2(o)}}
    return r}
  }
- $("send").addEventListener("click",function(){if(img)logEv("একটা স্ন্যাপ পাঠিয়েছে 📸","snap")},true);
  $("think").addEventListener("click",function(){logEv("তোমাকে ভাবছে 💞","home")},true);
 
  /* চিঠির বাক্স */
@@ -530,7 +556,8 @@ start=function(){
   if(!a.length){b.innerHTML='<p class="hint">কোনো চিঠি নেই।</p>';return a}
   a.forEach(function(o){var x=o.x;
    if(rec){
-    if(x.opened){b.appendChild(paperEl(x,false));var sm=document.createElement("div");sm.className="hint";sm.textContent=PN[x.from]+", "+ft(x.t);b.appendChild(sm);return}
+    if(x.opened){b.appendChild(paperEl(x,false));var sm=document.createElement("div");sm.className="hint";sm.textContent=PN[x.from]+", "+ft(x.t)+"  ";
+     var dx=document.createElement("button");dx.className="chip";dx.textContent="🗑️ মুছো";dx.style.padding="2px 10px";dx.onclick=function(){if(confirm("চিঠিটা মুছে ফেলবে? দুজনের কাছ থেকেই মুছে যাবে।"))DB.collection("letters").doc(o.id).delete()};sm.appendChild(dx);b.appendChild(sm);return}
     var locked=x.openOn&&x.openOn>TODAY,e=document.createElement("div");e.className="env";
     e.innerHTML='<div class="big">'+(locked?"🔒":"✉️")+'</div><div class="serif" style="font-size:1.15rem"></div><div class="hint"></div>';
     e.children[1].textContent=PN[x.from]+"র চিঠি, "+x.title;
@@ -540,7 +567,8 @@ start=function(){
     b.appendChild(e);
    }else{
     var dt=document.createElement("details");dt.className="card item";var su=document.createElement("summary");
-    su.textContent=x.title+"  ·  "+(x.opened?"খোলা হয়েছে ✓":x.openOn&&x.openOn>TODAY?"খুলবে "+fd(x.openOn):"এখনো বন্ধ");dt.appendChild(su);dt.appendChild(paperEl(x,false));b.appendChild(dt)}
+    su.textContent=x.title+"  ·  "+(x.opened?"খোলা হয়েছে ✓":x.openOn&&x.openOn>TODAY?"খুলবে "+fd(x.openOn):"এখনো বন্ধ");dt.appendChild(su);dt.appendChild(paperEl(x,false));
+    var dz=document.createElement("button");dz.className="ghost";dz.textContent="🗑️ মুছো";dz.style.cssText="padding:6px;margin-top:6px";dz.onclick=function(){if(confirm("চিঠিটা মুছে ফেলবে? দুজনের কাছ থেকেই মুছে যাবে।"))DB.collection("letters").doc(o.id).delete()};dt.appendChild(dz);b.appendChild(dt)}
   });return a}
  var s4=false;
  var _st4=start;
@@ -548,8 +576,12 @@ start=function(){
   var was=s4;if(!was){s4=true;patchDB()}
   _st4();if(was)return;
   bell.style.display="flex";
+  var evInit=false;
   DB.collection("events").orderBy("t","desc").limit(30).onSnapshot(function(qs){
-   evs=[];qs.forEach(function(d){var x=d.data();if(x.from!==WHO)evs.push(x)});badge();if(act.style.display==="flex")renderEv()});
+   evs=[];qs.forEach(function(d){var x=d.data();if(x.from!==WHO)evs.push(x)});badge();if(act.style.display==="flex")renderEv();
+   if(evInit)qs.docChanges().forEach(function(c){if(c.type!=="added")return;var x=c.doc.data();
+    if(x.from!==WHO&&x.t>bootT){var t=PN[x.from]+" "+x.text;toast("🔔 "+t,function(){goTab(x.tab||"home");if(x.sub==="letters")showLetters()});notify(t,c.doc.id)}});
+   evInit=true});
   DB.collection("letters").where("for","==",WHO).onSnapshot(function(qs){
    var a=rL("lrc",qs,true),n=a.filter(function(o){return !o.x.opened&&!(o.x.openOn&&o.x.openOn>TODAY)}).length;
    ltb.style.display=n?"block":"none";ltb.textContent="📬 "+PN[PW]+"র নতুন চিঠি এসেছে ("+bn(n)+")"});
@@ -620,7 +652,7 @@ start=function(){
  /* শেয়ার করা টাইমলাইন ও বাকেট লিস্ট */
  var _save=save,mFirst=true;
  function pushMem(){if(DB)DB.doc("meta/memory").set({tl:TL2,bl:BL},{merge:true}).catch(function(){})}
- save=function(k,v){_save(k,v);if(k==="tl"||k==="bl")pushMem()};
+ var lastML=0;save=function(k,v){_save(k,v);if(k==="tl"||k==="bl"){pushMem();if(Date.now()-lastML>20000){lastML=Date.now();logEv(k==="tl"?"স্মৃতির টাইমলাইন বদলেছে 🕰️":"বাকেট লিস্ট বদলেছে 📝","mem")}}};
  function mg(a,b,kf){var m={},o=[];a.concat(b).forEach(function(x){var k=kf(x);if(!m[k]){m[k]=1;o.push(x)}});return o}
 
  var _s=start,ran=false;
@@ -632,7 +664,7 @@ start=function(){
    other=a;dRedraw();
    if(inited&&changed&&a.length){
     $("dst").textContent=PN[PW]+" এখন আঁকছে ✏️";clearTimeout(idle);idle=setTimeout(function(){$("dst").textContent=ST},4000);
-    if(Date.now()-lastNote>60000&&(document.hidden||!$("g3").classList.contains("on"))){lastNote=Date.now();notify(PN[PW]+" আঁকছে ✏️")}}
+    }
    inited=true});
   DB.doc("meta/draw_"+WHO).onSnapshot(function(s){
    if(s.metadata.hasPendingWrites)return;
@@ -646,11 +678,11 @@ start=function(){
    if(s.metadata.hasPendingWrites)return;
    var d=s.data();
    if(!d){mFirst=false;pushMem();return}
-   if(mFirst){mFirst=false;
+   var mergeNow=mFirst&&!localStorage.getItem("memMerged");mFirst=false;if(mergeNow){localStorage.setItem("memMerged","1");
     var a=mg(d.tl||[],TL2,function(x){return x.d+"|"+x.t}),b=mg(d.bl||[],BL,function(x){return x.t});
     var grow=a.length>(d.tl||[]).length||b.length>(d.bl||[]).length;TL2=a;BL=b;if(grow)pushMem()}
    else{TL2=d.tl||TL2;BL=d.bl||BL}
-   _save("tl",TL2);_save("bl",BL);rt();rb()});
+   if(fixTL(TL2))pushMem();_save("tl",TL2);_save("bl",BL);rt();rb()});
  };
 })();
 
@@ -912,7 +944,323 @@ start=function(){
    if(d&&inited){
     if(pp==="play"&&d.phase==="win"){burst();win()}
     if(pp==="play"&&d.phase!=="play")notify(d.phase==="win"?"সাগর আর শিমা এক হয়েছে 🎉":"মিলনের দৌড় শেষ, ব্লকাররা জিতেছে 😈");
-    if(d.n===0&&d.t>pt&&d.by!==WHO)notify(PN[PW]+" মিলনের দৌড় শুরু করেছে 💞")}
+    }
    inited=true});
+ };
+})();
+
+/* ===== স্ন্যাপ (নতুন): একবার দেখা যাবে, দেখলে মিলিয়ে যাবে ===== */
+(function(){
+ var DUR=[3,5,10],dur=5,sin=[],sout=[],viewing=false;
+ chips("sdur",["⏱️ ৩ সেকেন্ড","⏱️ ৫ সেকেন্ড","⏱️ ১০ সেকেন্ড"],function(i){dur=DUR[i]},1);
+ function sbadge(){
+  var b=document.querySelector('nav button[data-t="snap"]');if(!b)return;
+  var d=b.querySelector("i.bd");if(!d){d=document.createElement("i");d.className="bd";b.style.position="relative";b.appendChild(d)}
+  d.style.display=sin.length?"block":"none";d.textContent=sin.length>9?"৯+":bn(sin.length)}
+ $("send").onclick=function(){
+  if(!img){$("snote").textContent="আগে একটা ছবি তোলো বা বেছে নাও।";return}
+  if(!DB||!WHO)return;
+  var btn=$("send"),w=img.naturalWidth,h=img.naturalHeight;
+  if(!w||!h){$("snote").textContent="ছবিটা লোড হয়নি, আবার বেছে নাও।";return}
+  btn.disabled=true;$("snote").textContent="ছোট করে পাঠানো হচ্ছে...";
+  var k=Math.min(1,720/Math.max(w,h)),c=document.createElement("canvas");c.width=Math.round(w*k);c.height=Math.round(h*k);
+  var x=c.getContext("2d"),cf=("filter" in CanvasRenderingContext2D.prototype);
+  if(cf)x.filter=flt||"none";
+  x.drawImage(img,0,0,c.width,c.height);
+  var q=.7,u=c.toDataURL("image/jpeg",q);
+  while(u.length>600000&&q>.3){q-=.1;u=c.toDataURL("image/jpeg",q)}
+  if(u.length>850000){btn.disabled=false;$("snote").textContent="ছবিটা অনেক বড়, অন্য ছবি বেছে নাও।";return}
+  DB.collection("snaps").add({from:WHO,for:PW,img:u,cap:$("ct").value.slice(0,60),f:cf?"":(flt||""),dur:dur,t:Date.now(),seen:false})
+   .then(function(){$("clr").onclick();$("snote").textContent="স্ন্যাপ "+PN[PW]+"র কাছে পৌঁছে গেছে ✨";logEv("একটা স্ন্যাপ পাঠিয়েছে 📸","snap");btn.disabled=false})
+   .catch(function(e){$("snote").textContent="সমস্যা: "+e.code;btn.disabled=false});
+ };
+ function view(o){
+  if(viewing)return;viewing=true;
+  var s=o.x,n=s.dur||5,v=$("view");$("vf").innerHTML="";
+  var im=document.createElement("img");im.src=s.img;if(s.f)im.style.filter=s.f;$("vf").appendChild(im);
+  if(s.cap){var d=document.createElement("div");d.className="cap";d.style.display="block";d.textContent=s.cap;$("vf").appendChild(d)}
+  v.style.display="flex";$("vt").textContent=bn(n)+" সেকেন্ডে মিলিয়ে যাবে (ছুঁলে বন্ধ)";
+  DB.collection("snaps").doc(o.id).update({seen:true,seenAt:Date.now(),img:firebase.firestore.FieldValue.delete()}).catch(function(){});
+  logEv("তোমার স্ন্যাপ দেখেছে 👀","snap");
+  var t=setInterval(function(){n--;if(n<=0)end();else $("vt").textContent=bn(n)+" সেকেন্ডে মিলিয়ে যাবে (ছুঁলে বন্ধ)"},1000);
+  function end(){clearInterval(t);v.style.display="none";$("vf").innerHTML="";v.onclick=null;viewing=false}
+  v.onclick=end;
+ }
+ function renderIn(){
+  var b=$("sin");b.innerHTML="";
+  if(!sin.length){b.style.display="none";return}
+  b.style.display="block";
+  sin.forEach(function(o){
+   var d=document.createElement("div");d.className="card";d.style.cssText="margin:0 0 10px;border:1.5px dashed var(--rose2)";
+   var p=document.createElement("div");p.className="serif";p.style.fontSize="1.15rem";p.textContent="📸 "+PN[o.x.from]+"র স্ন্যাপ";
+   var m=document.createElement("div");m.className="hint";m.textContent=ft(o.x.t)+" · "+bn(o.x.dur||5)+" সেকেন্ড · একবারই দেখা যাবে";
+   var k=document.createElement("button");k.textContent="👀 দেখো";k.style.marginTop="10px";k.onclick=function(){view(o)};
+   d.appendChild(p);d.appendChild(m);d.appendChild(k);b.appendChild(d)})}
+ function renderOut(){
+  var b=$("sout");b.innerHTML="";
+  if(!sout.length){b.innerHTML='<p class="hint">এখনো কিছু পাঠাওনি।</p>';return}
+  sout.forEach(function(o){
+   var d=document.createElement("div");d.className="card item";d.style.padding="12px 16px";
+   var t=document.createElement("span");t.textContent=ft(o.x.t)+" · "+(o.x.seen?"✓ দেখেছে":"এখনো দেখেনি")+(o.x.cap?" · “"+o.x.cap+"”":"");
+   var k=document.createElement("button");k.className="chip";k.style.marginTop="6px";k.textContent=o.x.seen?"🗑️ মুছো":"↩️ ফিরিয়ে নাও";
+   k.onclick=function(){DB.collection("snaps").doc(o.id).delete()};
+   d.appendChild(t);d.appendChild(k);b.appendChild(d)})}
+ var _s=start,ran=false;
+ start=function(){
+  var was=ran;ran=true;_s();if(was)return;
+  DB.collection("snaps").where("for","==",WHO).onSnapshot(function(qs){
+   sin=[];qs.forEach(function(d){var x=d.data();if(!x.seen&&x.img)sin.push({id:d.id,x:x})});
+   sin.sort(function(p,q){return q.x.t-p.x.t});renderIn();sbadge()},function(e){$("snote").textContent="স্ন্যাপে সমস্যা: "+e.code});
+  DB.collection("snaps").where("from","==",WHO).onSnapshot(function(qs){
+   sout=[];qs.forEach(function(d){sout.push({id:d.id,x:d.data()})});
+   sout.sort(function(p,q){return q.x.t-p.x.t});sout=sout.slice(0,8);renderOut()})
+ };
+})();
+
+/* ===== তারিখ এডিট (প্রথম দেখা / শেষ দেখা) ===== */
+(function(){
+ function ymd(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+ function ap(f,l){
+  if(f){var a=f.split("-");FIRST=new Date(+a[0],+a[1]-1,+a[2])}
+  if(l){var b=l.split("-");LAST=new Date(+b[0],+b[1]-1,+b[2])}
+  rcnt()}
+ $("dted").onclick=function(){
+  var b=$("dtbox"),show=b.style.display==="none";b.style.display=show?"block":"none";
+  if(show){$("dtf").value=ymd(FIRST);$("dtl").value=ymd(LAST)}};
+ $("dtsv").onclick=function(){
+  var f=$("dtf").value,l=$("dtl").value;if(!f||!l){$("dtn").textContent="দুটো তারিখই দাও।";return}
+  save("dates",{first:f,last:l});ap(f,l);
+  if(!DB){$("dtn").textContent="এই ফোনে সেভ হয়েছে ✓";return}
+  DB.doc("meta/dates").set({first:f,last:l}).then(function(){$("dtn").textContent="সেভ হয়েছে ✓ (দুজনের ফোনেই বদলাবে)";logEv("প্রথম/শেষ দেখার তারিখ বদলেছে 📅","home")}).catch(function(e){$("dtn").textContent="সমস্যা: "+e.code})};
+ var _s=start,ran=false;
+ start=function(){
+  var was=ran;ran=true;_s();if(was)return;
+  DB.doc("meta/dates").onSnapshot(function(s){var d=s.data();if(d){save("dates",d);ap(d.first,d.last)}})
+ };
+})();
+
+/* ===== ইনস্ট্যান্ট মেসেজ (চ্যাট) ===== */
+(function(){
+ var msgs=[],ptSeenT=0,typT=0,lastTyp=0,open=false,fs=false,cinit=false,seenLocal=+(localStorage.getItem("chatSeen")||0);
+ var cb=document.createElement("button");cb.id="chatb";cb.setAttribute("aria-label","চ্যাট");
+ cb.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><b id="chatN"></b>';document.body.appendChild(cb);
+ var ov=document.createElement("div");ov.id="chatov";
+ ov.innerHTML='<div class="chh"><button class="ghost" id="chx" aria-label="ফিরে যাও">←</button><div><b id="cht">চ্যাট</b><small id="chs"></small></div></div><div id="chl"></div><div class="chq" id="chq"></div><div class="chin"><input type="text" id="chi" placeholder="মেসেজ লেখো..." maxlength="500" enterkeyhint="send" autocomplete="off"><button id="chb" aria-label="পাঠাও">➤</button></div>';
+ document.body.appendChild(ov);
+ function unread(){return msgs.filter(function(m){return m.x.from!==WHO&&m.x.t>seenLocal}).length}
+ function badge(){var n=unread(),b=$("chatN");b.style.display=n?"block":"none";b.textContent=n>9?"৯+":bn(n)}
+ function status(){var s=$("chs");if(!s)return;s.textContent=(Date.now()-typT<4000)?"টাইপ করছে…":$("stPt").textContent}
+ function render(){
+  var l=$("chl"),near=l.scrollHeight-l.scrollTop-l.clientHeight<120;l.innerHTML="";
+  if(!msgs.length)l.innerHTML='<p class="hint" style="text-align:center;margin-top:30px">এখনো কোনো মেসেজ নেই। প্রথমটা তুমি পাঠাও 💗</p>';
+  var lastMine=-1,prevDay="";
+  msgs.forEach(function(m,i){if(m.x.from===WHO)lastMine=i});
+  msgs.forEach(function(m,i){
+   var x=m.x,me=x.from===WHO,dk2=new Date(x.t).toDateString();
+   if(dk2!==prevDay){prevDay=dk2;var dd=document.createElement("div");dd.className="chd";dd.textContent=new Date(x.t).toLocaleDateString("bn-BD",{day:"numeric",month:"long"});l.appendChild(dd)}
+   var b=document.createElement("div");b.className="bb "+(me?"me":"pt");
+   var tx=document.createElement("span");tx.textContent=x.text;b.appendChild(tx);
+   var sm=document.createElement("small");
+   sm.textContent=new Date(x.t).toLocaleTimeString("bn-BD",{hour:"numeric",minute:"2-digit"})+(me&&i===lastMine&&ptSeenT>=x.t?" · ✓✓ দেখেছে":"");
+   if(me){var del=document.createElement("span");del.textContent="  🗑️";del.style.cursor="pointer";del.setAttribute("role","button");del.setAttribute("aria-label","মুছো");
+    del.onclick=function(){if(confirm("মেসেজটা মুছে ফেলবে?"))DB.collection("chat").doc(m.id).delete()};sm.appendChild(del)}
+   b.appendChild(sm);l.appendChild(b)});
+  if(near||fs)l.scrollTop=l.scrollHeight}
+ function send(t){
+  t=(t||"").trim();if(!t||!DB)return;
+  pushPartner();DB.collection("chat").add({from:WHO,text:t.slice(0,500),t:Date.now()}).catch(function(e){toast("মেসেজে সমস্যা: "+e.code)})}
+ function markSeen(){
+  seenLocal=Date.now();localStorage.setItem("chatSeen",seenLocal);badge();
+  if(DB&&WHO)DB.doc("meta/chatseen_"+WHO).set({t:seenLocal}).catch(function(){})}
+ function openC(){open=true;ov.style.display="flex";$("cht").textContent=PN[PW]||"চ্যাট";fs=true;render();fs=false;markSeen();status();$("chl").scrollTop=$("chl").scrollHeight}
+ function closeC(){open=false;ov.style.display="none"}
+ cb.onclick=openC;$("chx").onclick=closeC;
+ $("chb").onclick=function(){var i=$("chi");send(i.value);i.value="";i.focus()};
+ $("chi").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();$("chb").onclick()}});
+ $("chi").addEventListener("input",function(){var n=Date.now();if(DB&&WHO&&n-lastTyp>2500){lastTyp=n;DB.doc("meta/typing_"+WHO).set({t:n}).catch(function(){})}});
+ ["❤️","😘","🥺","😂","🤗","💋"].forEach(function(e){var b=document.createElement("button");b.className="chip";b.textContent=e;b.onclick=function(){send(e)};$("chq").appendChild(b)});
+ document.addEventListener("visibilitychange",function(){if(!document.hidden&&open)markSeen()});
+ var _s=start,ran=false;
+ start=function(){
+  var was=ran;ran=true;_s();if(was)return;
+  cb.style.display="flex";
+  DB.collection("chat").orderBy("t","desc").limit(100).onSnapshot(function(qs){
+   var a=[];qs.forEach(function(d){a.push({id:d.id,x:d.data()})});a.sort(function(p,q){return p.x.t-q.x.t});msgs=a;
+   if(cinit)qs.docChanges().forEach(function(c){
+    if(c.type!=="added")return;var x=c.doc.data();
+    if(x.from===WHO||x.t<=bootT)return;
+    if(open&&!document.hidden){markSeen()}
+    else{var t=PN[x.from]+": "+x.text.slice(0,80);toast("💬 "+t,openC);notify(t,"chat-"+c.doc.id)}});
+   cinit=true;render();badge()},function(e){toast("চ্যাটে সমস্যা: "+e.code)});
+  DB.doc("meta/typing_"+PW).onSnapshot(function(s){var d=s.data();typT=d?d.t:0;status()});
+  DB.doc("meta/chatseen_"+PW).onSnapshot(function(s){var d=s.data();ptSeenT=d?d.t:0;render()});
+  setInterval(status,1500)
+ };
+})();
+
+/* ===== ছবির পাজল (যেকোনো ছবি, অ্যানিমেশনসহ, চ্যালেঞ্জ) ===== */
+(function(){
+ var gm=$("gm"),gsec=$("games"),pimg=null,gn=4,cur=null,recd=false,slots=[],pieces=[],sel=-1,moves=0,done=false,t0=0,tm=null;
+ var pn=document.createElement("div");pn.className="panel card";pn.id="g8";
+ pn.innerHTML='<div id="pzsetup"><p class="note" style="margin:0 0 8px">যেকোনো ছবি দাও, ওটা ভেঙে পাজল হয়ে যাবে 🧩</p>'+
+  '<label class="btn" for="pzf" style="margin:0 0 10px">🖼️ ছবি বেছে নাও</label><input type="file" id="pzf" accept="image/*">'+
+  '<div id="pzprev" style="display:none"><img id="pzimg" alt="পাজলের ছবি" style="width:100%;border-radius:16px"></div>'+
+  '<div class="chips" id="pzn"></div>'+
+  '<div class="two"><button id="pzme">▶️ নিজে খেলি</button><button class="ghost" id="pzch">🎯 চ্যালেঞ্জ দাও</button></div>'+
+  '<p class="note" id="pzn2"></p>'+
+  '<div class="serif" style="font-size:1.2rem;margin:14px 0 8px">🏆 চ্যালেঞ্জগুলো</div><div id="pzl"></div></div>'+
+  '<div id="pzplay" style="display:none"><div class="pzbar"><span id="pzst">⏱️ ০:০০</span><span id="pzmv">০ চাল</span></div><div id="pzb"></div>'+
+  '<div class="two"><button class="ghost" id="pzhint">👀 একটু দেখি</button><button class="ghost" id="pzgv">🏳️ হাল ছাড়ি</button></div>'+
+  '<button class="ghost" id="pzbk" style="margin-top:10px">← ফিরে যাও</button><p class="note" id="pzmsg"></p></div>';
+ gsec.appendChild(pn);
+ var c8=document.createElement("button");c8.className="chip";c8.textContent="🧩 ছবির পাজল";gm.appendChild(c8);
+ c8.onclick=function(){
+  [].forEach.call(gm.children,function(x){x.classList.toggle("on",x===c8)});
+  panels("g",5,-1);["g5","g6","g7"].forEach(function(id){var e=$(id);if(e)e.classList.remove("on")});pn.classList.add("on")};
+ [].forEach.call(gm.children,function(b){if(b!==c8)b.addEventListener("click",function(){pn.classList.remove("on")})});
+ chips("pzn",["৩×৩ সহজ","৪×৪ মাঝারি","৫×৫ কঠিন"],function(i){gn=3+i},1);
+
+ function fmt(ms){var s=Math.round(ms/1000);return bn(Math.floor(s/60))+":"+(s%60<10?"০":"")+bn(s%60)}
+ function perm(n){
+  var t=n*n,a,ok;
+  do{a=[];for(var i=0;i<t;i++)a.push(i);
+   for(var i=t-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),k=a[i];a[i]=a[j];a[j]=k}
+   var fx=0;a.forEach(function(v,i){if(v===i)fx++});ok=fx<=1}while(!ok);
+  return a}
+ $("pzf").onchange=function(){
+  var f=this.files[0];this.value="";if(!f)return;
+  var im=new Image();
+  im.onload=function(){
+   var z=480,c=document.createElement("canvas");c.width=c.height=z;var x=c.getContext("2d"),m=Math.min(im.width,im.height);
+   x.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,z,z);
+   pimg=c.toDataURL("image/jpeg",.72);URL.revokeObjectURL(im.src);
+   $("pzimg").src=pimg;$("pzprev").style.display="block";$("pzn2").textContent=""};
+  im.onerror=function(){$("pzn2").textContent="ছবিটা পড়া যায়নি, অন্য ছবি দাও।"};
+  im.src=URL.createObjectURL(f)};
+
+ function layout(scatter){
+  var n=cur.n;
+  slots.forEach(function(id,s){
+   var d=pieces[id];d.style.transitionDelay=scatter?(Math.random()*.28)+"s":"0s";
+   d.style.left=(s%n)*100/n+"%";d.style.top=Math.floor(s/n)*100/n+"%"})}
+ function tick(){$("pzst").textContent="⏱️ "+fmt(Date.now()-t0)}
+ function startP(p,rec){
+  cur=p;recd=rec;sel=-1;moves=0;done=false;t0=0;clearInterval(tm);
+  $("pzsetup").style.display="none";$("pzplay").style.display="block";
+  $("pzmsg").textContent="ছবিটা দেখে নাও… 👀";$("pzst").textContent="⏱️ ০:০০";$("pzmv").textContent="০ চাল";
+  var b=$("pzb");b.innerHTML="";b.className="";b.style.setProperty("--img","url("+p.img+")");
+  var n=p.n,t=n*n;pieces=[];slots=[];
+  for(var id=0;id<t;id++){
+   var d=document.createElement("div"),r=Math.floor(id/n),c=id%n;
+   d.className="pz";d.style.width=100/n+"%";d.style.height=100/n+"%";
+   d.style.backgroundSize=(n*100)+"% "+(n*100)+"%";
+   d.style.backgroundPosition=(c*100/(n-1))+"% "+(r*100/(n-1))+"%";
+   d.style.left=c*100/n+"%";d.style.top=r*100/n+"%";
+   d.onclick=(function(id){return function(){tap(id)}})(id);
+   b.appendChild(d);pieces[id]=d;slots[id]=id}
+  setTimeout(function(){
+   if(!cur||cur!==p)return;
+   slots=p.order.slice();layout(true);
+   $("pzmsg").textContent="মিলিয়ে ফেলো! দুটো টুকরো ছুঁয়ে অদলবদল করো";
+   setTimeout(function(){if(cur===p&&!done){t0=Date.now();tm=setInterval(tick,500)}},700)},1400)}
+ function tap(id){
+  if(done||!t0)return;
+  if(sel<0){sel=id;pieces[id].classList.add("sel");return}
+  if(sel===id){pieces[id].classList.remove("sel");sel=-1;return}
+  var a=slots.indexOf(sel),b=slots.indexOf(id);slots[a]=id;slots[b]=sel;
+  pieces[sel].classList.remove("sel");sel=-1;moves++;$("pzmv").textContent=bn(moves)+" চাল";
+  layout(false);
+  if(slots.every(function(v,i){return v===i}))finish()}
+ function record(o){
+  if(!recd||!cur.id||!DB)return;
+  var u={};u["res."+WHO]=o;return DB.collection("puzzles").doc(cur.id).update(u)}
+ function finish(){
+  done=true;clearInterval(tm);var ms=Date.now()-t0;
+  $("pzb").classList.add("win");$("pzmsg").textContent="🎉 হয়ে গেছে! "+fmt(ms)+", "+bn(moves)+" চাল";burst();win();
+  var r=record({ok:true,moves:moves,ms:ms,t:Date.now()});
+  if(r)r.then(function(){logEv("পাজল মিলিয়ে ফেলেছে 🧩 ("+fmt(ms)+", "+bn(moves)+" চাল)","games")})}
+ $("pzhint").onclick=function(){
+  if(done||!t0)return;var b=$("pzb");b.classList.add("peek");setTimeout(function(){b.classList.remove("peek")},1500)};
+ $("pzgv").onclick=function(){
+  if(done||!cur)return;if(!confirm("হাল ছেড়ে দেবে? পাজলটা নিজে নিজে মিলে যাবে।"))return;
+  done=true;clearInterval(tm);slots=slots.map(function(v,i){return i});layout(false);
+  $("pzmsg").textContent="🏳️ হাল ছেড়েছো, কিন্তু ছবিটা কী সুন্দর! 💗";
+  var r=record({ok:false,t:Date.now()});if(r)r.then(function(){logEv("পাজলটা মেলাতে পারেনি 🏳️","games")})};
+ $("pzbk").onclick=function(){clearInterval(tm);cur=null;$("pzplay").style.display="none";$("pzsetup").style.display="block"};
+ $("pzme").onclick=function(){
+  if(!pimg){$("pzn2").textContent="আগে একটা ছবি বেছে নাও।";return}
+  startP({img:pimg,n:gn,order:perm(gn),id:null},false)};
+ $("pzch").onclick=function(){
+  if(!pimg){$("pzn2").textContent="আগে একটা ছবি বেছে নাও।";return}
+  if(!DB||!WHO)return;
+  var o=perm(gn),img2=pimg,n=gn;
+  DB.collection("puzzles").add({from:WHO,for:PW,img:img2,n:n,order:o,t:Date.now(),res:{}}).then(function(ref){
+   $("pzn2").textContent=PN[PW]+"কে চ্যালেঞ্জ পাঠানো হয়েছে 🎯";
+   logEv("একটা পাজল চ্যালেঞ্জ পাঠিয়েছে 🧩, পারো কিনা দেখো!","games");
+   startP({img:img2,n:n,order:o,id:ref.id},true)}).catch(function(e){$("pzn2").textContent="সমস্যা: "+e.code})};
+
+ function renderL(qs){
+  var b=$("pzl");b.innerHTML="";
+  if(qs.empty){b.innerHTML='<p class="hint">এখনো কোনো চ্যালেঞ্জ নেই।</p>';return}
+  qs.forEach(function(doc){
+   var x=doc.data(),id=doc.id,res=x.res||{},d=document.createElement("div");d.className="card";d.style.margin="0 0 10px";
+   var im=document.createElement("img");im.src=x.img;im.alt="পাজলের ছবি";im.style.cssText="width:84px;height:84px;object-fit:cover;border-radius:12px;float:left;margin:0 12px 6px 0";
+   var h=document.createElement("div");h.className="serif";h.style.fontSize="1.1rem";h.textContent=PN[x.from]+"র চ্যালেঞ্জ · "+bn(x.n)+"×"+bn(x.n);
+   var m=document.createElement("div");m.className="hint";m.textContent=ft(x.t);
+   d.appendChild(im);d.appendChild(h);d.appendChild(m);
+   ["sagor","shima"].forEach(function(k){
+    var r=res[k],p=document.createElement("div");
+    p.textContent=PN[k]+": "+(r?(r.ok?"✅ "+fmt(r.ms)+", "+bn(r.moves)+" চাল":"🏳️ মেলাতে পারেনি"):"এখনো খেলেনি");d.appendChild(p)});
+   if(res.sagor&&res.shima&&res.sagor.ok&&res.shima.ok){
+    var w=res.sagor.ms<=res.shima.ms?"sagor":"shima",wn=document.createElement("div");wn.style.cssText="color:var(--rose);font-weight:600";wn.textContent="🏆 "+PN[w]+" জিতেছে!";d.appendChild(wn)}
+   var ac=document.createElement("div");ac.className="two";ac.style.clear="both";
+   var pl=document.createElement("button");pl.textContent=res[WHO]?"▶️ আবার খেলি":"▶️ খেলো";
+   pl.onclick=function(){startP({img:x.img,n:x.n,order:x.order,id:id},!res[WHO])};
+   ac.appendChild(pl);
+   if(x.from===WHO){var dl2=document.createElement("button");dl2.className="ghost";dl2.textContent="🗑️ মুছো";dl2.onclick=function(){if(confirm("চ্যালেঞ্জটা মুছে ফেলবে?"))DB.collection("puzzles").doc(id).delete()};ac.appendChild(dl2)}
+   else ac.style.gridTemplateColumns="1fr";
+   d.appendChild(ac);b.appendChild(d)})}
+ var _s=start,ran=false,pInit=false;
+ start=function(){
+  var was=ran;ran=true;_s();if(was)return;
+  DB.collection("puzzles").orderBy("t","desc").limit(3).onSnapshot(function(qs){renderL(qs);pInit=true},function(e){$("pzn2").textContent="পাজলে সমস্যা: "+e.code})
+ };
+})();
+
+
+/* ===== ফোনে পুশ নোটিফিকেশন (অ্যাপ বন্ধ থাকলেও): ntfy ===== */
+(function(){
+ var c=mk2('<div class="serif" style="font-size:1.2rem;margin-bottom:6px">📲 ফোনে নোটিফিকেশন (অ্যাপ বন্ধ থাকলেও)</div>'+
+  '<p class="hint" style="margin:0 0 8px">ও কিছু করলে তোমার ফোনে আসবে “কিছু করেছে 💗”, কী করেছে সেটা লেখা থাকবে না।</p>'+
+  '<p class="hint" style="margin:0 0 10px">১) ফোনে <b>ntfy</b> অ্যাপ নাও (Play Store / App Store)।<br>২) নিচের বোতাম চাপো।<br>৩) ntfy অ্যাপে <b>+</b> চেপে নিচের নামটা দিয়ে Subscribe করো।</p>'+
+  '<button id="pnb">📲 চালু করো</button>'+
+  '<div id="pnbox" style="display:none"><input type="text" id="pnt" readonly aria-label="তোমার গোপন নাম"><div class="two"><button class="ghost" id="pnc">কপি করো</button><button class="ghost" id="pnx">টেস্ট পাঠাও</button></div><button class="ghost" id="pno" style="margin-top:10px">বন্ধ করো</button></div>'+
+  '<p class="note" id="pnn"></p>');
+ var myTopic=null;
+ function show(){
+  $("pnbox").style.display=myTopic?"block":"none";$("pnb").style.display=myTopic?"none":"block";
+  if(myTopic)$("pnt").value=myTopic}
+ function gen(){
+  var a=new Uint8Array(16);crypto.getRandomValues(a);
+  return "ap-"+[].map.call(a,function(x){return (x%36).toString(36)}).join("")}
+ $("pnb").onclick=function(){
+  if(!DB||!WHO)return;
+  var t=gen();
+  DB.doc("meta/push_"+WHO).set({topic:t}).then(function(){localStorage.setItem("ntfyOn","1");$("pnn").textContent="চালু হয়েছে ✓ এবার ntfy অ্যাপে এই নামটা Subscribe করো।"}).catch(function(e){$("pnn").textContent="সমস্যা: "+e.code})};
+ $("pnc").onclick=function(){
+  var t=$("pnt").value;
+  if(navigator.clipboard)navigator.clipboard.writeText(t).then(function(){$("pnn").textContent="কপি হয়েছে ✓"}).catch(function(){$("pnt").select()});else{$("pnt").select()}};
+ $("pnx").onclick=function(){
+  if(!myTopic)return;
+  fetch("https://ntfy.sh",{method:"POST",body:JSON.stringify({topic:myTopic,title:"আমাদের পৃথিবী 💗",message:"✅ টেস্ট: নোটিফিকেশন ঠিকঠাক কাজ করছে",tags:["white_check_mark"]})})
+   .then(function(){$("pnn").textContent="টেস্ট পাঠানো হয়েছে। ফোনে এল কিনা দেখো।"}).catch(function(){$("pnn").textContent="পাঠানো যায়নি, ইন্টারনেট দেখো।"})};
+ $("pno").onclick=function(){
+  if(!DB||!confirm("ফোনের নোটিফিকেশন বন্ধ করবে?"))return;
+  DB.doc("meta/push_"+WHO).delete().then(function(){localStorage.removeItem("ntfyOn");$("pnn").textContent="বন্ধ করা হয়েছে।"})};
+ var _s=start,ran=false;
+ start=function(){
+  var was=ran;ran=true;_s();if(was)return;
+  DB.doc("meta/push_"+WHO).onSnapshot(function(s){var d=s.data();myTopic=d&&d.topic||null;if(!myTopic)localStorage.removeItem("ntfyOn");show()});
+  DB.doc("meta/push_"+PW).onSnapshot(function(s){var d=s.data();pushTopic=d&&d.topic||null})
  };
 })();
