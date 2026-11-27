@@ -9,7 +9,7 @@ self.addEventListener('install', function (e) {
   self.skipWaiting();
   // অফলাইনে ইনস্টল/আইকনের জন্য এগুলো আগেই ক্যাশে রাখা (একটা না পেলেও ইনস্টল থামে না)
   e.waitUntil(caches.open(CACHE).then(function (c) {
-    return Promise.all(['./', 'manifest.json', 'icons/icon-192.png', 'icons/icon-512.png'].map(function (u) { return c.add(u).catch(function () {}); }));
+    return Promise.all(['./', 'manifest.json', 'icon-192.png', 'icon-512.png'].map(function (u) { return c.add(u).catch(function () {}); }));
   }));
 });
 self.addEventListener('activate', function (e) {

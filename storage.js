@@ -17,7 +17,8 @@
   ["coupons","🎟️ নিজেদের কুপন",function(x){return who(x.from)+": "+(x.title||"কুপন")}],
   ["album","🖼️ অ্যালবামের ছবি",function(x){return who(x.from)+": "+(x.cap||"ছবি")+" ("+(x.date||"")+")"}],
   ["stories","📚 গল্প আর্কাইভ",function(x){return who(x.from)+": "+(x.title||"গল্প")}],
-  ["memgame","🧠 স্মৃতি অনুমান",function(x){return who(x.from)+": "+(x.q||"স্মৃতি")}]
+  ["memgame","🧠 স্মৃতি অনুমান",function(x){return who(x.from)+": "+(x.q||"স্মৃতি")}],
+  ["tripph","🗺️ জেলার ছবি",function(x){return who(x.from)+": "+(x.nm||"জেলা")}]
  ];
  var AGE=[[7,"৭ দিন"],[30,"৩০ দিন"],[90,"৯০ দিন"],[0,"সব"]],age=30;
  var data={},errs={},metaB=0,scanned=false,open={},shown={},busy=false;

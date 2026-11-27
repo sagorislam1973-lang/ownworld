@@ -28,24 +28,24 @@
  function mount(){
   if(player||!(window.YT&&YT.Player))return;
   var d=LV.el("div");d.id="muyt";$("mup").appendChild(d);
-  player=new YT.Player("muyt",{width:"100%",height:"220",playerVars:{playsinline:1,rel:0,modestbranding:1},events:{onReady:function(){ready=true;$("muc").style.display="";$("mus").style.display="";if(doc&&doc.vid)apply(true)},onStateChange:onState,onAutoplayBlocked:function(){needTap=true;status()}}})}
+  player=new YT.Player("muyt",{width:"100%",height:"220",playerVars:{playsinline:1,rel:0,modestbranding:1},events:{onReady:function(){ready=true;$("muc").style.display="";$("mus").style.display="";if(doc&&doc.vid)apply()},onStateChange:onState,onAutoplayBlocked:function(){needTap=true;status()}}})}
 
  function pos(){try{return player.getCurrentTime()||0}catch(e){return 0}}
  function playing(){try{return player.getPlayerState()===1}catch(e){return false}}
- function expected(d){return d.play?d.pos+(Date.now()-d.at)/1000:d.pos}
+ function expected(d){return d.play?d.pos+Math.max(0,(Date.now()-d.at)/1000):d.pos}
  function publish(play){
   if(!DB||!WHO||!vid)return;
-  DB.doc("meta/music").set({vid:vid,by:WHO,play:play,pos:Math.round(pos()*10)/10,at:Date.now(),v:++cv}).catch(function(e){say("সমস্যা: "+e.code)})}
- function guard(){applying=Date.now()+1800}
- function apply(force){
+  DB.doc("meta/music").set({vid:vid,by:WHO,play:play,pos:Math.round(pos()*10)/10,at:Date.now(),v:Date.now()+"_"+WHO+"_"+(++cv)}).catch(function(e){say("সমস্যা: "+e.code)})}
+ function guard(ms){applying=Date.now()+(ms||1800)}
+ /* অন্যজনের শেষ অবস্থার সঙ্গে নিজের প্লেয়ার মেলায় (বারবার চালালেও একই ফল) */
+ function apply(){
   if(!ready||!doc||!doc.vid)return;
-  if(doc.by===WHO&&!force&&vid===doc.vid)return;
-  var ex=Math.max(0,expected(doc));guard();
+  var ex=Math.max(0,expected(doc));guard(4000);
   if(vid!==doc.vid){vid=doc.vid;
    if(doc.play)player.loadVideoById({videoId:vid,startSeconds:ex});else player.cueVideoById({videoId:vid,startSeconds:ex})}
   else{
-   if(Math.abs(pos()-ex)>2.5)player.seekTo(ex,true);
-   if(doc.play&&!playing()){player.playVideo();setTimeout(function(){if(doc&&doc.play&&!playing()){needTap=true;status()}},1800)}
+   if(Math.abs(pos()-ex)>(doc.play?3:1.5))player.seekTo(ex,true);
+   if(doc.play&&!playing()){player.playVideo();setTimeout(function(){if(doc&&doc.play&&!playing()){needTap=true;status()}},2500)}
    if(!doc.play&&playing())player.pauseVideo()}
   $("mul").value="https://youtu.be/"+vid;status()}
  function onState(e){
@@ -58,8 +58,8 @@
   vid=id;guard();player.loadVideoById(id);say("");setTimeout(function(){publish(true)},800)};
  $("mup1").onclick=function(){if(!vid)return;guard();player.playVideo();setTimeout(function(){publish(true)},400)};
  $("mup2").onclick=function(){if(!vid)return;guard();player.pauseVideo();setTimeout(function(){publish(false)},400)};
- $("mus").onclick=function(){if(doc){apply(true);say("সিঙ্ক করা হয়েছে")}};
- $("mut").onclick=function(){needTap=false;if(doc)apply(true);try{player.playVideo()}catch(e){}status()};
+ $("mus").onclick=function(){if(!vid)return;publish(playing());say("")};
+ $("mut").onclick=function(){needTap=false;if(doc)apply();guard(4000);try{player.playVideo()}catch(e){}status()};
 
  /* শোনার অবস্থা */
  function beat(){
@@ -79,9 +79,9 @@
  LV.onStart(function(){
   DB.doc("meta/music").onSnapshot(function(s){
    var was=doc;doc=s.exists?s.data():null;
-   if(doc&&doc.by!==WHO&&(!was||was.v!==doc.v)){
-    if(ready)apply(false);
-    if(!pn.classList.contains("on")&&doc.play&&Date.now()-doc.at<20000&&was)toast("🎵 "+LV.pn()+" একটা গান চালিয়েছে, শুনবে?",function(){goTab("games");[].forEach.call($("gm").children,function(c){if(/একসাথে গান/.test(c.textContent))c.click()})})}
+   if(doc&&doc.by!==WHO&&!s.metadata.hasPendingWrites){
+    if(ready)apply();
+    if(!pn.classList.contains("on")&&doc.play&&Date.now()-doc.at<20000&&(!was||was.at!==doc.at))toast("🎵 "+LV.pn()+" একটা গান চালিয়েছে, শুনবে?",function(){goTab("games");[].forEach.call($("gm").children,function(c){if(/একসাথে গান/.test(c.textContent))c.click()})})}
    status()},function(e){err="সমস্যা: "+e.code;status()});
   DB.doc("meta/mus_"+PW).onSnapshot(function(s){partner=s.exists?s.data():null;status()},function(){})});
 })();
